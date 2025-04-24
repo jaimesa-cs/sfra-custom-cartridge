@@ -1,0 +1,47 @@
+<isdecorate template="common/layout/page">
+
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/productDetail.js');
+        assets.addCss('/css/product/detail.css');
+    </isscript>
+    
+    <isset name="product" value="${pdict.product}" scope="page" />
+    <isset name="cmsData" value="${pdict.cmsData}" scope="page" />
+    <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
+    <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
+    <isset name="isQuickView" value="${false}" scope="page" />
+    <isset name="isProductSet" value="${pdict.product.productType === 'set'}" scope="page" />    
+    <iscomment> Iterate over cmsData.elements keys </iscomment>
+    <isset name="productDetails" value="${pdict.cmsProductDetails}" scope="page" />
+    
+    
+    <isloop items="${cmsData.elements}" var="element" status="elementStatus">
+        <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
+        <isset name="block" value ="${element[blockId]}" scope="page" />
+
+        <isif condition="${blockId === 'banner'}">
+            <div class="home-main homepage">
+        <!-- dwMarker="slot" dwContentID="home-main-m" dwContext="global"-->
+                <style>
+                    
+                    .main-callout {
+                        background-image: url(${block.image.url});
+                    }
+                
+                </style>
+            <div class="hero main-callout">
+            <h1 class="page-title">${block.title}</h1>
+        </div>
+    </div>
+        </isif>
+        <isif condition="${blockId === 'product_details'}">
+            <isinclude template="product/components/cms/cmsProductDetails" />
+        </isif>        
+    </isloop>
+    <isif condition="${productDetails === null}">
+        <isinclude template="product/components/cms/cmsProductDetails" />
+    </isif>
+
+    
+</isdecorate>

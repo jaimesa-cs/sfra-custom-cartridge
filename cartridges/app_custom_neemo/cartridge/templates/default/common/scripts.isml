@@ -1,0 +1,23 @@
+
+<script>//common/scripts.isml</script>
+<script defer type="text/javascript" src="${URLUtils.staticURL('/js/main.js')}"></script>
+<isloop items="${ require('*/cartridge/scripts/assets.js').scripts }" var="script">
+    <isif condition="${script.integrity != null}">
+        <script defer type="text/javascript" integrity="${script.integrity}" crossorigin="anonymous" src="${script.src}"></script>
+    <iselse>
+        <script defer type="text/javascript" src="${script.src}"></script>
+    </isif>
+</isloop>
+
+
+<script type='module'>
+    //TODO: Update this values from preferences
+    import ContentstackLivePreview from 'https://esm.sh/@contentstack/live-preview-utils@3.0.1';    
+    ContentstackLivePreview.init({
+          mode: 'builder',
+          stackDetails: {
+            apiKey: 'blt89e5cca4078d31f2', // Your stack API key
+            environment: 'production', // Your stack environment
+          },
+        });
+</script>
