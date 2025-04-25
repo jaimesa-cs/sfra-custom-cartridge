@@ -1,7 +1,9 @@
 
 <div class="col-sm-12 col-md-8 col-lg-9 value content" id="collapsible-description-${loopState && loopState.count ? loopState.count : '1'}">
     <isif condition="${productDetails && !cmsUtils.isJsonRteEmpty(productDetails.product_description)}">        
-        <isprint value="${cmsHelper.rteToHtml(productDetails.product_description)}" encoding="off" />
+        <div ${cmsUtils.cslp(productDetails, 'product_description')}>
+            <isprint value="${cmsHelper.rteToHtml(productDetails.product_description)}" encoding="off" />
+        </div>
     <iselseif condition="${product.shortDescription}"/>    
             <isprint value="${product.shortDescription}" encoding="off" />
     </isif>

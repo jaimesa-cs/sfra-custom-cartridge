@@ -1,6 +1,6 @@
 
 <isif condition="${productDetails && productDetails.product_details && !cmsUtils.isJsonRteEmpty(productDetails.product_details)} ">        
-    <div class="col-sm-12 col-md-8 col-lg-9 value content" id="collapsible-details-${loopState && loopState.count ? loopState.count : '1'}">
+    <div class="col-sm-12 col-md-8 col-lg-9 value content" id="collapsible-details-${loopState && loopState.count ? loopState.count : '1'}" ${cmsUtils.cslp(productDetails, 'product_details')}>
         <isprint value="${cmsHelper.rteToHtml(productDetails.product_details)}" encoding="off" />
     </div>
 <iselseif condition="${product.longDescription}"/>

@@ -15,27 +15,19 @@
     <iscomment> Iterate over cmsData.elements keys </iscomment>
     <isset name="productDetails" value="${pdict.cmsProductDetails}" scope="page" />
     
-    <div ${...cslp(csmData, 'elements')}>
+    <div ${cmsUtils.cslp(cmsData, 'elements')}>
         <isloop items="${cmsData.elements}" var="element" status="elementStatus">
             <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
-            <isset name="block" value ="${element[blockId]}" scope="page" />            
+            <isset name="block" value ="${element[blockId]}" scope="page" />              
             <isif condition="${blockId === 'banner'}">
-                <div class="home-main homepage">
-            <!-- dwMarker="slot" dwContentID="home-main-m" dwContext="global"-->
-                    <style>
-                        
-                        .main-callout {
-                            background-image: url(${block.image.url});
-                        }
-                    
-                    </style>
-                <div class="hero main-callout">
-                <h1 class="page-title">${block.title}</h1>
-            </div>
-        </div>
+                <div class="home-main homepage" ${cmsUtils.cslp(cmsData, 'elements', elementStatus.index)} >
+                    <isinclude template="common/cms/banner" />
+                </div>
             </isif>
             <isif condition="${blockId === 'product_details' || blockId === 'default_product_details'}">
-                <isinclude template="product/components/cms/cmsProductDetails" />
+                <div ${cmsUtils.cslp(cmsData, 'elements', elementStatus.index)} >
+                    <isinclude template="product/components/cms/cmsProductDetails" />
+                </div>
             </isif>
             <isif condition="${blockId === 'cards'}">
                 <style>
@@ -47,60 +39,14 @@
                         padding: 10px;        
                     }
                 </style>
-                <div class="container product-detail product-wrapper" data-pid="${product.id}">
-                    <div class="row">
+                <div class="container" ${cmsUtils.cslp(cmsData, 'elements', elementStatus.index)} > 
+                    <div class="row" ${cmsUtils.cslp(block, 'card')} >
                         <div class="col-12">
-                            <div class="row">
-                                <!-- Card 1 -->
-                                <div class="col-sm-6 col-md-3 card card-padding">
-                                    <div class="card-icon">
-                                        <img src="/path/to/icon1.png" alt="Icon 1" />
-                                    </div>
-                                    <h3 class="card-title">Card Title 1</h3>
-                                    <p class="card-description">
-                                        <strong>Bold text</strong> and <em>italic text</em> for the description.
-                                    </p>
-                                    <a href="/link1" class="card-cta-link">Learn More</a>
-                                </div>
-
-                                <!-- Card 2 -->
-                                <div class="col-sm-6 col-md-3 card">
-                                    <div class="card-icon">
-                                        <img src="/path/to/icon2.png" alt="Icon 2" />
-                                    </div>
-                                    <h3 class="card-title">Card Title 2</h3>
-                                    <p class="card-description">
-                                        <strong>Bold text</strong> and <em>italic text</em> for the description.
-                                    </p>
-                                    <button class="card-cta-button">Get Started</button>
-                                </div>
-
-                                <!-- Card 3 -->
-                                <div class="col-sm-6 col-md-3 card">
-                                    <div class="card-icon">
-                                        <img src="/path/to/icon3.png" alt="Icon 3" />
-                                    </div>
-                                    <h3 class="card-title">Card Title 3</h3>
-                                    <p class="card-description">
-                                        <strong>Bold text</strong> and <em>italic text</em> for the description.
-                                    </p>
-                                    <a href="/link3" class="card-cta-link">Learn More</a>
-                                </div>
-
-                                <!-- Card 4 -->
-                                <div class="col-sm-6 col-md-3 card">
-                                    <div class="card-icon">
-                                        <img src="/path/to/icon4.png" alt="Icon 4" />
-                                    </div>
-                                    <h3 class="card-title">Card Title 4</h3>
-                                    <p class="card-description">
-                                        <strong>Bold text</strong> and <em>italic text</em> for the description.
-                                    </p>
-                                    <button class="card-cta-button">Get Started</button>
-                                </div>
+                            <div class="row">                                
+                                <isinclude template="common/cms/cards" />                                                
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </isif>
         </isloop>

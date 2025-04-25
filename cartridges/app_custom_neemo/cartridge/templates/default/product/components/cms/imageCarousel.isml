@@ -1,19 +1,21 @@
 <div class="primary-images col-12 col-sm-6">
 
-    <div id="pdpCarousel-${product.id}" class="carousel slide" data-interval="0" data-prev="${Resource.msg('button.previous', 'common', null)}" data-next="${Resource.msg('button.next', 'common', null)}">
+    <div id="pdpCarousel-${product.id}" class="carousel slide" data-interval="0" data-prev="${Resource.msg('button.previous', 'common', null)}" data-next="${Resource.msg('button.next', 'common', null)}" >
         <isif condition="${productDetails.product_images.length > 1}">
             <ol class="carousel-indicators" aria-hidden="true">
                 <isloop items="${productDetails.produt_images}" var="image" status="loopStatus">
-                    <li data-target="${"#"}pdpCarousel-${product.id}" data-slide-to="${loopStatus.index}" class='<isif condition="${loopStatus.index == 0}">active</isif>'>
+                    <li data-target="${"#"}pdpCarousel-${product.id}" data-slide-to="${loopStatus.index}" class='<isif condition="${loopStatus.index == 0}">active</isif>' ${cmsUtils.cslp(productDetails, 'product_images', loopStatus.index)}>
                     </li>
                 </isloop>
             </ol>
         </isif>
 
-        <div class="carousel-inner" role="listbox">
+        <div class="carousel-inner" role="listbox" ${cmsUtils.cslp(productDetails, 'product_images')}>
             <isloop items="${productDetails.product_images}" var="image" status="loopStatus">
-                <div class='carousel-item <isif condition="${loopStatus.index == 0}">active</isif>'>
-                    <img src="${image.url}" class="d-block img-fluid" alt="${image.alt} image number ${image.index}" itemprop="image" />
+                <div class='carousel-item <isif condition="${loopStatus.index == 0}">active</isif>' ${cmsUtils.cslp(productDetails, 'product_images', loopStatus.index)}>
+                    <div>
+                        <img src="${image.url}" class="d-block img-fluid" alt="${image.alt} image number ${image.index}" itemprop="image" />
+                    </div>
                 </div>
             </isloop>
         </div>

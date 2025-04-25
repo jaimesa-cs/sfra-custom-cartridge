@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="d-md-none col-sm-12">
                         <isif condition="${productDetails && productDetails.product_name !== ''}">
-                            <h1 class="product-name">${productDetails.product_name}</h1>
+                            <h1 class="product-name" ${cmsUtils.cslp(productDetails, 'product_name')}>${productDetails.product_name}</h1>
                         <iselse>
                             <h1 class="product-name">${product.productName}</h1>                                
                         </isif>
@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col">
                         <isif condition="${productDetails && productDetails.product_name !== ''}">
-                            <h1 class="product-name hidden-sm-down">${productDetails.product_name}</h1>
+                            <h1 class="product-name hidden-sm-down" ${cmsUtils.cslp(productDetails, 'product_name')}>${productDetails.product_name}</h1>
                         <iselse>
                             <h1 class="product-name hidden-sm-down">${product.productName}</h1>                            
                         </isif>

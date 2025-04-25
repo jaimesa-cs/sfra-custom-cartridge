@@ -4,6 +4,8 @@ var server = require("server");
 server.extend(module.superModule);
 
 var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils");
+var customUtils = require("*/cartridge/scripts/lib/custom-utils");
+
 function enrichViewDataFromCms(req, res) {
   var viewData = res.getViewData();
   if (req.querystring && !req.querystring.pid) {
@@ -28,7 +30,7 @@ function enrichViewDataFromCms(req, res) {
       lpUtils.addEditableTags(
         entry,
         requestData.content_type_uid,
-        true,
+        false,
         requestData.locale
       );
     }
