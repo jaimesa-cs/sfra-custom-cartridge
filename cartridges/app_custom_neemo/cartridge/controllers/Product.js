@@ -78,4 +78,27 @@ server.append("Show", function (req, res, next) {
   next();
 });
 
+server.get("JSON", function (req, res, next) {
+  res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
+  var productHelper = require("*/cartridge/scripts/helpers/productHelpers");
+  var showProductPageHelperResult = productHelper.showProductPage(
+    req.querystring,
+    req.pageMetaData
+  );
+
+  res.json({
+    product: showProductPageHelperResult.product,
+    addToCartUrl: showProductPageHelperResult.addToCartUrl,
+    resources: showProductPageHelperResult.resources,
+    breadcrumbs: showProductPageHelperResult.breadcrumbs,
+  });
+  // res.json({
+  //   name: "Test Product",
+  //   id: req.querystring.pid || "test123",
+  //   price: 19.99,
+  // });
+
+  next();
+});
+
 module.exports = server.exports();
