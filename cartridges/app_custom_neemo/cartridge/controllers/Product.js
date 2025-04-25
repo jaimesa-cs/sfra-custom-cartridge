@@ -3,6 +3,7 @@
 var server = require("server");
 server.extend(module.superModule);
 
+var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils");
 function enrichViewDataFromCms(req, res) {
   var viewData = res.getViewData();
   if (req.querystring && !req.querystring.pid) {
@@ -22,14 +23,42 @@ function enrichViewDataFromCms(req, res) {
     //We do some data transformation here
     //to make sure the data is in the right format for the template
     //We can also use the cmsHelper to transform the data
-    const productData = data.entries[0];
-    if (productData.elements && productData.elements.length > 0) {
-      const productDetailsFound = productData.elements.filter(
-        (e) => Object.keys(e)[0] === "product_details"
+    const entry = data.entries[0];
+    if (requestData.live_preview) {
+      lpUtils.addEditableTags(
+        entry,
+        requestData.content_type_uid,
+        true,
+        requestData.locale
       );
-      if (productDetailsFound && productDetailsFound.length > 0) {
-        const productDetails = productDetailsFound[0].product_details;
-        viewData.cmsProductDetails = productDetails;
+    }
+    const productData = entry;
+    if (productData.elements && productData.elements.length > 0) {
+      const defaultProductDetailsFound = productData.elements.filter(
+        (e) => Object.keys(e)[0] === "default_product_details"
+      );
+      let showDefaultProductDetails = false;
+      let defaultProductDetails = null;
+      if (defaultProductDetailsFound && defaultProductDetailsFound.length > 0) {
+        defaultProductDetails =
+          defaultProductDetailsFound[0].default_product_details;
+        showDefaultProductDetails = defaultProductDetails.show;
+      }
+      viewData.cmsProductDetails = null;
+      if (showDefaultProductDetails) {
+        if (
+          defaultProductDetails.override_default_product_details &&
+          defaultProductDetails.override_default_product_details.length > 0
+        ) {
+          const productDetails =
+            defaultProductDetails.override_default_product_details[0];
+          viewData.cmsProductDetails = productDetails;
+        }
+      } else {
+        //delete the block from productData
+        productData.elements = productData.elements.filter(
+          (e) => Object.keys(e)[0] !== "default_product_details"
+        );
       }
 
       //remove the product_details element from the productData

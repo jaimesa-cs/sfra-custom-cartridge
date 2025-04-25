@@ -19,6 +19,9 @@ const rteToHtml = (doc) => {
   // return "$Nick!!";
 };
 
-module.exports = {
-  rteToHtml: rteToHtml,
-};
+module.exports = Object.assign(
+  {
+    rteToHtml: rteToHtml,
+  },
+  lpUtils
+);

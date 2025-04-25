@@ -2,9 +2,18 @@
 
 var LocalServiceRegistry = require("dw/svc/LocalServiceRegistry");
 var Site = require("dw/system/Site");
+var Locale = require("dw/util/Locale");
 
 const appendBaseRequestData = function (appendRequestData) {
   var sitePrefs = Site.getCurrent();
+  var currentLocale = Locale.getLocale(request.locale); // returns Locale object
+  var language = currentLocale.language; // e.g., "en"
+  var country = currentLocale.country;
+  var locale =
+    currentLocale && currentLocale.language && currentLocale.country
+      ? (language + "-" + country).toLowerCase()
+      : "en-us";
+
   var requestData = {
     endpoint: sitePrefs.getCustomPreferenceValue("cmsApiEndpoint"),
     preview_endpoint: sitePrefs.getCustomPreferenceValue("cmsPreviewEndpoint"),
@@ -13,6 +22,7 @@ const appendBaseRequestData = function (appendRequestData) {
     environment: sitePrefs.getCustomPreferenceValue("cmsEnvironment"),
     branch: sitePrefs.getCustomPreferenceValue("cmdBranch"), //There's a typo in Business Manager, it should be "cmsBranch"
     preview_token: sitePrefs.getCustomPreferenceValue("cmsPreviewToken"),
+    locale: locale || "en-us", // Default to "en-us" if locale is not found
   };
   if (appendRequestData) {
     Object.assign(appendRequestData, requestData);
@@ -44,14 +54,10 @@ const getContentstackService = function (requestData) {
         let query = "";
         if (requestData.query) {
           const decodedQuery = decodeURIComponent(requestData.query);
-          query = "&query=" + encodeURIComponent(decodedQuery);
+          query = encodeURIComponent(decodedQuery);
         }
-        host =
-          host +
-          "/v3/content_types/" +
-          requestData.content_type_uid +
-          "/entries?locale=en-us" +
-          query;
+        host = `${host}/v3/content_types/${requestData.content_type_uid}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${query}`;
+
         svc.setURL(host);
         svc.setRequestMethod("GET");
         svc.addHeader("Content-Type", "application/json");

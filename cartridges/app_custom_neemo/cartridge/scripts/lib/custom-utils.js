@@ -11,4 +11,17 @@ const isJsonRteEmpty = function (rte) {
   );
 };
 
-exports.isJsonRteEmpty = isJsonRteEmpty;
+const cslp = function (obj, field, index) {
+  const data = Array.isArray(obj) ? obj[index || 0] : obj;
+
+  // if (!isLivePreviewEnabled) return {};
+  // if (!areEditTagsEnabled) return {};
+  if (!data.$) return {};
+  if (index !== undefined) {
+    field = `${field}__${index}`;
+  }
+  if (!data.$[field]) return {};
+  return data.$[field];
+};
+
+module.exports = { isJsonRteEmpty, cslp };
