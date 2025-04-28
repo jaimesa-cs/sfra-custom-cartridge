@@ -30,40 +30,44 @@ const appendBaseRequestData = function (appendRequestData) {
   return appendRequestData;
 };
 
+const getHost = function (requestData) {
+  var host = requestData.endpoint;
+  if (requestData && requestData.live_preview) {
+    host = requestData.preview_endpoint;
+  }
+  return host;
+};
+
+const prepareHeaders = function (svc, requestData) {
+  svc.addHeader("Content-Type", "application/json");
+  svc.addHeader("api_key", requestData.api_key);
+  svc.setRequestMethod(requestData.method);
+
+  if (requestData && requestData.live_preview) {
+    svc.addHeader("preview_token", requestData.preview_token);
+    svc.addHeader("live_preview", requestData.live_preview);
+    svc.addHeader("content_type", requestData.content_type_uid);
+    if (requestData.preview_timestamp) {
+      svc.addHeader(
+        "preview_timestamp",
+        decodeURIComponent(requestData.preview_timestamp)
+      );
+    }
+  } else {
+    svc.addHeader("access_token", requestData.access_token);
+  }
+};
+
 const getContentstackService = function (requestData) {
   var contentstackService = LocalServiceRegistry.createService(
     "Contentstack.Content.Service",
     {
       createRequest: function (svc, requestData) {
-        var host = requestData.endpoint;
-        if (requestData && requestData.live_preview) {
-          host = requestData.preview_endpoint;
-          svc.addHeader("preview_token", requestData.preview_token);
-          svc.addHeader("live_preview", requestData.live_preview);
-          svc.addHeader("content_type", requestData.content_type_uid);
-          if (requestData.preview_timestamp) {
-            svc.addHeader(
-              "preview_timestamp",
-              decodeURIComponent(requestData.preview_timestamp)
-            );
-          }
-        } else {
-          svc.addHeader("access_token", requestData.access_token);
-        }
-
-        let query = "";
-        if (requestData.query) {
-          const decodedQuery = decodeURIComponent(requestData.query);
-          query = encodeURIComponent(decodedQuery);
-        }
-        host = `${host}/v3/content_types/${requestData.content_type_uid}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${query}`;
-
-        svc.setURL(host);
-        svc.setRequestMethod("GET");
-        svc.addHeader("Content-Type", "application/json");
-        svc.addHeader("api_key", requestData.api_key);
-
-        svc.addHeader("Accept", "application/json");
+        var host = getHost(requestData);
+        prepareHeaders(svc, requestData);
+        //Content Type Based Query
+        const url = `${host}/${requestData.apiSlug}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${requestData.encodedQuery}`;
+        svc.setURL(url);
         return null;
       },
       parseResponse: function (svc, httpClient) {

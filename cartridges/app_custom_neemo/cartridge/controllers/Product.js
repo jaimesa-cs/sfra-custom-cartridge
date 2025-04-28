@@ -6,21 +6,74 @@ server.extend(module.superModule);
 var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils");
 var customUtils = require("*/cartridge/scripts/lib/custom-utils");
 
+function getRequestData(type, req) {
+  // There are two types of requests:
+  let result = {
+    queryType: type,
+    method: "GET",
+  };
+  switch (type) {
+    case "url":
+      //Content Type Based Queries
+      //TODO: The url will depend on implementation chosen, in here we rely
+      //TODO: on the "x-is-path_info" header to get the url of the page
+      const slugUrl = req.httpHeaders.get("x-is-path_info");
+
+      result = Object.assign(result, {
+        queryType: "content_type",
+        query: `{"url":"${slugUrl}"}`,
+        content_type_uid: "product_page", //TODO: Move to Custom Preferences product_page
+        apiSlug: "v3/content_types/product_page",
+      });
+      break;
+    case "taxonomy":
+      //Single Content Type Taxonomy Based Queries
+      // You could construct your query to support multiple content types
+      //query={
+      // "taxonomies.taxonomy_uid" : "term_uid",
+      // "_content_type_uid": { "$in" : ["_content_type_uid1", "_content_type_uid2"] }}
+      result = Object.assign(result, {
+        queryType: "taxonomy",
+        //TODO: Move to Custom Preferences, page_types, pdp and product_page
+        query: `{ "taxonomies.page_types" : "pdp", "_content_type_uid": "product_page" }`,
+        apiSlug: "v3/taxonomies",
+      });
+      break;
+    default:
+      //Defaults to Content Type Based Queries
+      result = Object.assign(result, {
+        queryType: "content_type",
+        query: `{"product.data.id":"${req.querystring.pid}"}`,
+        content_type_uid: "product_page", //TODO: Move to Custom Preferences product_page
+        apiSlug: "v3/content_types/product_page",
+      });
+      break;
+  }
+  if (result.query) {
+    const decodedQuery = decodeURIComponent(result.query);
+    result.encodedQuery = encodeURIComponent(decodedQuery);
+  }
+  if (req.querystring) {
+    result = Object.assign(result, req.querystring);
+  }
+  return result;
+}
+
 function enrichViewDataFromCms(req, res) {
   var viewData = res.getViewData();
   if (req.querystring && !req.querystring.pid) {
     return;
   }
-  var requestData = {
-    query: `{"product.data.id":"${req.querystring.pid}"}`,
-    content_type_uid: "product_page",
-  };
-  if (req.querystring) {
-    requestData = Object.assign(requestData, req.querystring);
-  }
+
+  // You can retrieve entries using the content_type_uid or the taxonomy_uid+term_uid
+  // const requestData = getRequestData("content_type", req);
+  // const requestData = getRequestData("taxonomy", req);
+  const requestData = getRequestData("url", req);
+
   const data = require("*/cartridge/scripts/services/contentstack").getCmsData(
     requestData
   );
+
   if (data && data.entries && data.entries.length > 0) {
     //We do some data transformation here
     //to make sure the data is in the right format for the template
@@ -78,6 +131,7 @@ server.append("Show", function (req, res, next) {
   next();
 });
 
+//TODO: Delete/Modify for production
 server.get("JSON", function (req, res, next) {
   res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
   var productHelper = require("*/cartridge/scripts/helpers/productHelpers");
