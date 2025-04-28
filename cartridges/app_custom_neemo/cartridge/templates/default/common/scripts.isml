@@ -9,15 +9,16 @@
     </isif>
 </isloop>
 
-
-<script type='module'>
-    //TODO: Update this values from preferences
-    import ContentstackLivePreview from 'https://esm.sh/@contentstack/live-preview-utils@3.2.0';    
-    ContentstackLivePreview.init({
-          mode: 'builder',
-          stackDetails: {
-            apiKey: 'blt89e5cca4078d31f2', // Your stack API key
-            environment: 'production', // Your stack environment
-          },
-        });
-</script>
+<isif condition="${pdict.isLivePreview}">
+    <script type='module'>
+        //TODO: Update this values from preferences
+        import ContentstackLivePreview from 'https://esm.sh/@contentstack/live-preview-utils@3.2.0';    
+        ContentstackLivePreview.init({
+            mode: 'builder',
+            stackDetails: {
+                apiKey: '${pdict.cmsHelper.api_key}', // Your stack API key
+                environment: '${pdict.cmsHelper.environment}', // Your stack environment
+            },
+            });
+    </script>
+</isif>

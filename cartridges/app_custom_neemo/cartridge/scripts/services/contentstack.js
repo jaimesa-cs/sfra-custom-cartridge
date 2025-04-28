@@ -43,6 +43,9 @@ const prepareHeaders = function (svc, requestData) {
   svc.addHeader("api_key", requestData.api_key);
   svc.setRequestMethod(requestData.method);
 
+  if (requestData.variant) {
+    svc.addHeader("x-cs-variant-uid", requestData.variant);
+  }
   if (requestData && requestData.live_preview) {
     svc.addHeader("preview_token", requestData.preview_token);
     svc.addHeader("live_preview", requestData.live_preview);
@@ -58,7 +61,44 @@ const prepareHeaders = function (svc, requestData) {
   }
 };
 
-const getContentstackService = function (requestData) {
+const getPersonalizeService = function (userId) {
+  var personalizeService = LocalServiceRegistry.createService(
+    "Contentstack.Personalize.Service",
+    {
+      createRequest: function (svc, requestData) {
+        // var host = getHost(requestData);
+
+        svc.setURL(`https://personalize-edge.contentstack.com/manifest`);
+        svc.addHeader("Content-Type", "application/json");
+        svc.addHeader("x-project-uid", "680fbf769fb4d1e7c68e5c65");
+        svc.addHeader("x-cs-personalize-user-uid", userId);
+        svc.setRequestMethod("GET");
+        // svc.setURL(url);
+        return null;
+      },
+      parseResponse: function (svc, httpClient) {
+        var result = {};
+
+        try {
+          result = JSON.parse(httpClient.text);
+        } catch (e) {
+          result = httpClient.text;
+        }
+        return result;
+      },
+      getRequestLogMessage: function (requestData) {
+        return JSON.stringify(requestData);
+      },
+
+      getResponseLogMessage: function (response) {
+        return response.text;
+      },
+    }
+  );
+  return personalizeService;
+};
+
+const getContentService = function (requestData) {
   var contentstackService = LocalServiceRegistry.createService(
     "Contentstack.Content.Service",
     {
@@ -94,8 +134,13 @@ const getContentstackService = function (requestData) {
 module.exports = {
   getCmsData: function (requestData) {
     const cmsRequestData = appendBaseRequestData(requestData);
-    const contentstackService = getContentstackService(cmsRequestData);
+    const contentstackService = getContentService(cmsRequestData);
     var result = contentstackService.call(cmsRequestData);
+    return result.ok ? result.object : null;
+  },
+  getPersonalizeManifest: function (userId) {
+    const personalizeService = getPersonalizeService(userId);
+    var result = personalizeService.call();
     return result.ok ? result.object : null;
   },
   appendBaseRequestData: appendBaseRequestData,

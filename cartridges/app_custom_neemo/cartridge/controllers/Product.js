@@ -5,6 +5,7 @@ server.extend(module.superModule);
 
 var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils");
 var customUtils = require("*/cartridge/scripts/lib/custom-utils");
+var Contentstack = require("*/cartridge/scripts/services/contentstack");
 
 function getRequestData(type, req) {
   // There are two types of requests:
@@ -62,17 +63,33 @@ function getRequestData(type, req) {
 function enrichViewDataFromCms(req, res) {
   var viewData = res.getViewData();
   if (req.querystring && !req.querystring.pid) {
-    return;
+    return next();
   }
+  // Personalization
+  // var userId = req.querystring.userId;
 
   // You can retrieve entries using the content_type_uid or the taxonomy_uid+term_uid
   // const requestData = getRequestData("content_type", req);
   // const requestData = getRequestData("taxonomy", req);
   const requestData = getRequestData("url", req);
 
-  const data = require("*/cartridge/scripts/services/contentstack").getCmsData(
-    requestData
-  );
+  // get userId from the cookies in the request
+  let userId = null;
+  if (request.httpCookies && request.httpCookies["cs-personalize-user-uid"]) {
+    userId = request.httpCookies["cs-personalize-user-uid"].value;
+  }
+  const manifest = Contentstack.getPersonalizeManifest(userId);
+
+  if (manifest && manifest.experiences && manifest.experiences.length > 0) {
+    //Get Experience:
+    const experience = manifest.experiences[0];
+    if (experience) {
+      const variantUid = `cs_personalize_${experience.shortUid}_${experience.activeVariantShortUid}`;
+      requestData.variant = variantUid;
+    }
+  }
+  //x-cs-variant-uid
+  const data = Contentstack.getCmsData(requestData);
 
   if (data && data.entries && data.entries.length > 0) {
     //We do some data transformation here
@@ -122,7 +139,9 @@ function enrichViewDataFromCms(req, res) {
     viewData.cmsData = productData;
     viewData.cmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
     viewData.cmsUtils = require("*/cartridge/scripts/lib/custom-utils");
+    //Do this to enable Livew Preview in scripts.isml
   }
+  viewData.isLivePreview = requestData.live_preview !== undefined;
   res.setViewData(viewData);
 }
 

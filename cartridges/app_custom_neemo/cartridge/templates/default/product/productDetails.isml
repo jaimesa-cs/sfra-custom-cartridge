@@ -51,6 +51,9 @@
             </isif>
         </isloop>
     </div>
-
+    <iscomment> Fallback to default productDetails </iscomment>
+    <isif condition = "${cmsData === null}">
+        <isinclude template="product/components/cms/cmsProductDetails" />
+    </isif>
     
 </isdecorate>
