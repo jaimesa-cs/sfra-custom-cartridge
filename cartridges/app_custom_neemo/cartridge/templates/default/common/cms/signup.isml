@@ -11,8 +11,8 @@
                     console.log(profile.data); // log full data object
                     console.log(profile.data.user.segments); // log array of audiences the visitor is a member of
                     // I need to reload the current page with the query string ?known_by_email=true
-                    window.location.href = window.location.href.split('?')[0] + '?known_by_email=true';
-                    // window.location.reload();
+                    // window.location.href = window.location.href.split('?')[0] + '?known_by_email=true';
+                    window.location.reload();
                 }
                 jstag.call('entityReady', myCallbackFunction);
             
@@ -27,6 +27,13 @@
         
     }
 </script>
+
+<style>
+.email-signup-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+</style>
 
 <div class="container email-signup-container container--mb-lg">
     <div class="row">

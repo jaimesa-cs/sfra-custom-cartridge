@@ -148,7 +148,7 @@ const getContentService = function (requestData) {
         var host = getHost(requestData);
         prepareHeaders(svc, requestData);
         // Construct the URL for the content request
-        const url = `${host}/${requestData.apiSlug}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${requestData.encodedQuery}`;
+        const url = `${host}/${requestData.apiSlug}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${requestData.encodedQuery}&include_dimension=true&include_applied_variants=true`;
         svc.setURL(url);
         return null;
       },
