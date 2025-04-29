@@ -3,6 +3,11 @@
         console.log("Button clicked");
         if(jstag) {
             const emailInput = document.getElementById("newsletterEmail");
+            const button = document.getElementById("send-email");
+            //disable the input
+            emailInput.disabled = true;
+            button.disabled = true;
+            
             if(emailInput && emailInput.value) {
                 const email = emailInput.value;
                 emailInput.value  = "Signing up...";
@@ -59,7 +64,7 @@
                                         <label class="form-control-label" style="font-size: x-small" for="newsletterEmail" ${cmsUtils.cslp(block, 'input_footer')}>${block.input_footer}</label>
                                     </div>
                                     <div class="button-holder col-xs-4 col-sm-3 col-md-2">
-                                        <button type="button" class="btn btn-primary  js-btn-newsletter" name="send-email" value="send-email" onclick="handleButtonClick()">
+                                        <button type="button" class="btn btn-primary  js-btn-newsletter" id="send-email" name="send-email" value="send-email" onclick="handleButtonClick()">
                                             <span class="btn__text" ${cmsUtils.cslp(block, 'button_label')}>${block.button_label}</span>
                                             <i class="bif bif-long-arrow-right text" aria-hidden="true"></i>
                                         </button>
