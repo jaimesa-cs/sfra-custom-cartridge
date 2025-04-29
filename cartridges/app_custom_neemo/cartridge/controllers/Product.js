@@ -1,101 +1,127 @@
 "use strict";
 
+/**
+ * Product Controller
+ *
+ * This controller extends the default Product controller in SFRA to include
+ * additional functionality for integrating with Contentstack's API. It enriches
+ * the product details page with CMS data and provides a debug endpoint for
+ * retrieving product-related JSON data.
+ *
+ * Features:
+ * - Enriches product view data with Contentstack CMS data.
+ * - Handles personalization using Contentstack's personalization manifest.
+ * - Adds support for live preview functionality.
+ * - Provides a debug endpoint to return product data in JSON format.
+ */
+
+// Import required modules
 var server = require("server");
 server.extend(module.superModule);
 
-var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils");
-var customUtils = require("*/cartridge/scripts/lib/custom-utils");
-var Contentstack = require("*/cartridge/scripts/services/contentstack");
+var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils"); // Utility functions for Contentstack live preview
+var customUtils = require("*/cartridge/scripts/lib/custom-utils"); // Custom utility functions
+var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Service for interacting with Contentstack API
 
+/**
+ * Constructs the request data object based on the type of request.
+ * @param {string} type - The type of request (e.g., "url", "taxonomy").
+ * @param {Object} req - The request object.
+ * @returns {Object} The constructed request data object.
+ */
 function getRequestData(type, req) {
-  // There are two types of requests:
   let result = {
     queryType: type,
     method: "GET",
   };
+
   switch (type) {
     case "url":
-      //Content Type Based Queries
-      //TODO: The url will depend on implementation chosen, in here we rely
-      //TODO: on the "x-is-path_info" header to get the url of the page
-      const slugUrl = req.httpHeaders.get("x-is-path_info");
-
+      // Content Type Based Queries
+      const slugUrl = req.httpHeaders.get("x-is-path_info"); // Get the URL from the request headers
       result = Object.assign(result, {
         queryType: "content_type",
         query: `{"url":"${slugUrl}"}`,
-        content_type_uid: "product_page", //TODO: Move to Custom Preferences product_page
+        content_type_uid: "product_page", // Content type UID for product pages
         apiSlug: "v3/content_types/product_page",
       });
       break;
+
     case "taxonomy":
-      //Single Content Type Taxonomy Based Queries
-      // You could construct your query to support multiple content types
-      //query={
-      // "taxonomies.taxonomy_uid" : "term_uid",
-      // "_content_type_uid": { "$in" : ["_content_type_uid1", "_content_type_uid2"] }}
+      // Taxonomy-Based Queries
       result = Object.assign(result, {
         queryType: "taxonomy",
-        //TODO: Move to Custom Preferences, page_types, pdp and product_page
         query: `{ "taxonomies.page_types" : "pdp", "_content_type_uid": "product_page" }`,
         apiSlug: "v3/taxonomies",
       });
       break;
+
     default:
-      //Defaults to Content Type Based Queries
+      // Default to Content Type Based Queries
       result = Object.assign(result, {
         queryType: "content_type",
         query: `{"product.data.id":"${req.querystring.pid}"}`,
-        content_type_uid: "product_page", //TODO: Move to Custom Preferences product_page
+        content_type_uid: "product_page",
         apiSlug: "v3/content_types/product_page",
       });
       break;
   }
+
+  // Encode and decode the query for safe transmission
   if (result.query) {
     const decodedQuery = decodeURIComponent(result.query);
     result.encodedQuery = encodeURIComponent(decodedQuery);
   }
+
+  // Merge additional query string parameters
   if (req.querystring) {
     result = Object.assign(result, req.querystring);
   }
+
   return result;
 }
 
+/**
+ * Enriches the view data with CMS data from Contentstack.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 function enrichViewDataFromCms(req, res) {
   var viewData = res.getViewData();
+
+  // If no product ID is provided, skip enrichment
   if (req.querystring && !req.querystring.pid) {
     return next();
   }
-  // Personalization
-  // var userId = req.querystring.userId;
 
-  // You can retrieve entries using the content_type_uid or the taxonomy_uid+term_uid
-  // const requestData = getRequestData("content_type", req);
-  // const requestData = getRequestData("taxonomy", req);
+  // Construct request data for Contentstack
   const requestData = getRequestData("url", req);
 
-  // get userId from the cookies in the request
+  // Retrieve user ID from cookies for personalization
   let userId = null;
   if (request.httpCookies && request.httpCookies["cs-personalize-user-uid"]) {
     userId = request.httpCookies["cs-personalize-user-uid"].value;
   }
+
+  // Get the personalization manifest from Contentstack
   const manifest = Contentstack.getPersonalizeManifest(userId);
 
+  // Add personalization variant UID if available
   if (manifest && manifest.experiences && manifest.experiences.length > 0) {
-    //Get Experience:
     const experience = manifest.experiences[0];
     if (experience) {
       const variantUid = `cs_personalize_${experience.shortUid}_${experience.activeVariantShortUid}`;
       requestData.variant = variantUid;
     }
   }
-  //x-cs-variant-uid
+
+  // Fetch CMS data from Contentstack
   const data = Contentstack.getCmsData(requestData);
 
   if (data && data.entries && data.entries.length > 0) {
-    //We do some data transformation here
-    //to make sure the data is in the right format for the template
-    //We can also use the cmsHelper to transform the data
     const entry = data.entries[0];
+
+    // Add editable tags for live preview
     if (requestData.live_preview) {
       lpUtils.addEditableTags(
         entry,
@@ -104,19 +130,25 @@ function enrichViewDataFromCms(req, res) {
         requestData.locale
       );
     }
+
     const productData = entry;
+
+    // Handle default product details
     if (productData.elements && productData.elements.length > 0) {
       const defaultProductDetailsFound = productData.elements.filter(
         (e) => Object.keys(e)[0] === "default_product_details"
       );
       let showDefaultProductDetails = false;
       let defaultProductDetails = null;
+
       if (defaultProductDetailsFound && defaultProductDetailsFound.length > 0) {
         defaultProductDetails =
           defaultProductDetailsFound[0].default_product_details;
         showDefaultProductDetails = defaultProductDetails.show;
       }
+
       viewData.cmsProductDetails = null;
+
       if (showDefaultProductDetails) {
         if (
           defaultProductDetails.override_default_product_details &&
@@ -127,30 +159,31 @@ function enrichViewDataFromCms(req, res) {
           viewData.cmsProductDetails = productDetails;
         }
       } else {
-        //delete the block from productData
+        // Remove the block from productData
         productData.elements = productData.elements.filter(
           (e) => Object.keys(e)[0] !== "default_product_details"
         );
       }
-
-      //remove the product_details element from the productData
     }
 
+    // Add CMS data and helpers to the view data
     viewData.cmsData = productData;
     viewData.cmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
     viewData.cmsUtils = require("*/cartridge/scripts/lib/custom-utils");
-    //Do this to enable Livew Preview in scripts.isml
   }
+
+  // Indicate if live preview is enabled
   viewData.isLivePreview = requestData.live_preview !== undefined;
   res.setViewData(viewData);
 }
 
+// Append custom logic to the "Show" route
 server.append("Show", function (req, res, next) {
   enrichViewDataFromCms(req, res);
   next();
 });
 
-//TODO: Delete/Modify for production
+// Debug route to return JSON data (for development purposes only)
 server.get("JSON", function (req, res, next) {
   res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
   var productHelper = require("*/cartridge/scripts/helpers/productHelpers");
@@ -165,13 +198,9 @@ server.get("JSON", function (req, res, next) {
     resources: showProductPageHelperResult.resources,
     breadcrumbs: showProductPageHelperResult.breadcrumbs,
   });
-  // res.json({
-  //   name: "Test Product",
-  //   id: req.querystring.pid || "test123",
-  //   price: 19.99,
-  // });
 
   next();
 });
 
+// Export the server module
 module.exports = server.exports();
