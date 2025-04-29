@@ -1,5 +1,6 @@
 <script>    
     function handleButtonClick() {
+        console.log("Button clicked");
         if(jstag) {
             const emailInput = document.getElementById("newsletterEmail");
             if(emailInput && emailInput.value) {
@@ -12,7 +13,10 @@
                     console.log(profile.data.user.segments); // log array of audiences the visitor is a member of
                     // I need to reload the current page with the query string ?known_by_email=true
                     // window.location.href = window.location.href.split('?')[0] + '?known_by_email=true';
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                    
                 }
                 jstag.call('entityReady', myCallbackFunction);
             
