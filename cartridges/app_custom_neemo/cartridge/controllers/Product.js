@@ -31,6 +31,10 @@ var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Serv
  */
 function getRequestData(type, req) {
   let result = {
+    //TODO: Personalize Workaround
+    pageUrl: `https://${req.httpHeaders.get("x-is-host")}${req.httpHeaders.get(
+      "x-is-path_info"
+    )}?${req.httpHeaders.get("x-is-query_string")}`, // Get the URL from the request headers
     queryType: type,
     method: "GET",
   };
@@ -104,7 +108,7 @@ function enrichViewDataFromCms(req, res) {
   }
 
   // Get the personalization manifest from Contentstack
-  const manifest = Contentstack.getPersonalizeManifest(userId);
+  const manifest = Contentstack.getPersonalizeManifest(userId, requestData);
 
   // Add personalization variant UID if available
   if (manifest && manifest.experiences && manifest.experiences.length > 0) {

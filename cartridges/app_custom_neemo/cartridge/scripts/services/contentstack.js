@@ -61,14 +61,16 @@ const prepareHeaders = function (svc, requestData) {
   }
 };
 
-const getPersonalizeService = function (userId) {
+const getPersonalizeService = function (userId, requestData) {
+  const pageUrl = requestData.pageUrl;
   var personalizeService = LocalServiceRegistry.createService(
     "Contentstack.Personalize.Service",
     {
-      createRequest: function (svc, requestData) {
+      createRequest: function (svc, httpClient) {
         svc.setURL(`https://personalize-edge.contentstack.com/manifest`);
         svc.addHeader("Content-Type", "application/json");
         svc.addHeader("x-project-uid", "680fbf769fb4d1e7c68e5c65");
+        svc.addHeader("x-page-url", pageUrl);
         svc.addHeader("x-cs-personalize-user-uid", userId);
         svc.setRequestMethod("GET");
         // svc.setURL(url);
@@ -84,8 +86,8 @@ const getPersonalizeService = function (userId) {
         }
         return result;
       },
-      getRequestLogMessage: function (requestData) {
-        return JSON.stringify(requestData);
+      getRequestLogMessage: function (request) {
+        return JSON.stringify(request);
       },
 
       getResponseLogMessage: function (response) {
@@ -100,7 +102,7 @@ const getContentService = function (requestData) {
   var contentstackService = LocalServiceRegistry.createService(
     "Contentstack.Content.Service",
     {
-      createRequest: function (svc, requestData) {
+      createRequest: function (svc, httpClient) {
         var host = getHost(requestData);
         prepareHeaders(svc, requestData);
         //Content Type Based Query
@@ -118,8 +120,8 @@ const getContentService = function (requestData) {
         }
         return result;
       },
-      getRequestLogMessage: function (requestData) {
-        return JSON.stringify(requestData);
+      getRequestLogMessage: function (request) {
+        return JSON.stringify(request);
       },
 
       getResponseLogMessage: function (response) {
@@ -136,8 +138,9 @@ module.exports = {
     var result = contentstackService.call(cmsRequestData);
     return result.ok ? result.object : null;
   },
-  getPersonalizeManifest: function (userId) {
-    const personalizeService = getPersonalizeService(userId);
+  getPersonalizeManifest: function (userId, requestData) {
+    const cmsRequestData = appendBaseRequestData(requestData);
+    const personalizeService = getPersonalizeService(userId, cmsRequestData);
     var result = personalizeService.call();
     return result.ok ? result.object : null;
   },
