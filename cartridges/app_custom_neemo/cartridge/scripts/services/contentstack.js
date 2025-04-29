@@ -66,8 +66,6 @@ const getPersonalizeService = function (userId) {
     "Contentstack.Personalize.Service",
     {
       createRequest: function (svc, requestData) {
-        // var host = getHost(requestData);
-
         svc.setURL(`https://personalize-edge.contentstack.com/manifest`);
         svc.addHeader("Content-Type", "application/json");
         svc.addHeader("x-project-uid", "680fbf769fb4d1e7c68e5c65");

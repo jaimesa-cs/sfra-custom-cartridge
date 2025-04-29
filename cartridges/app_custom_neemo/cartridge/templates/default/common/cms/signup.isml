@@ -1,0 +1,67 @@
+<script>    
+    function handleButtonClick() {
+        if(jstag) {
+            const emailInput = document.getElementById("newsletterEmail");
+            if(emailInput && emailInput.value) {
+                const email = emailInput.value;
+                emailInput.value  = "Signing up...";
+                jstag.send({ "email" : email });
+                var myCallbackFunction = function(profile){
+                // do something here with the profile
+                    console.log(profile.data); // log full data object
+                    console.log(profile.data.user.segments); // log array of audiences the visitor is a member of
+                    document.location.reload();
+                }
+                jstag.call('entityReady', myCallbackFunction);
+            
+
+                
+                
+            }else{
+                console.error("Email input not found or empty");
+            }
+            
+        }
+        
+    }
+</script>
+
+<div class="container email-signup-container container--mb-lg">
+    <div class="row">
+        <div class="col-lg-12 footer__newsletter-container has-color-theme js-footer-emailsignup whitesoprano-blackbass" data-color-themes="whitesoprano-blackbass">                        
+            <div class="footer-newsletter text">                            
+                <div class="container">
+                    <div class="row footer__email-signup">
+                        <section class="col px-0 footer__email-signup-section" aria-labelledby="sign-up-header">
+                            <h2 id="sign-up-header" class="footer__email-signup-title" ${cmsUtils.cslp(block, 'heading')}>${block.heading}</h2>
+                            <p class="footer__email-signup-sub4heading" ${cmsUtils.cslp(block, 'subheading')}>${block.subheading}</p>
+                        </section>
+                    </div>
+                    <div class="row">
+                        <section class="col footer__email-signup-form px-0">
+                            <form id="js-form-newsletter" action="" class="newsletter-form" novalidate="">
+                                <div class="form-group row form-holders step1">
+                                    <div class="input-holder col-xs-8 col-sm-9 col-md-10">
+                                        <input type="email" class="form-control newsletter-email" id="newsletterEmail" placeholder=" " pattern="^[\w.%+-]+@[\w.-]+\.[\w]{2,7}$" required="" label="Email">
+                                        <label class="form-control-label" style="font-size: x-small" for="newsletterEmail" ${cmsUtils.cslp(block, 'input_footer')}>${block.input_footer}</label>
+                                    </div>
+                                    <div class="button-holder col-xs-4 col-sm-3 col-md-2">
+                                        <button type="button" class="btn btn-primary  js-btn-newsletter" name="send-email" value="send-email" onclick="handleButtonClick()">
+                                            <span class="btn__text" ${cmsUtils.cslp(block, 'button_label')}>${block.button_label}</span>
+                                            <i class="bif bif-long-arrow-right text" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="footnote-holder col-md-12 column--px" ${cmsUtils.cslp(block, 'disclaimer')}>
+                                        <isprint value="${cmsHelper.rteToHtml(block.disclaimer)}" encoding="off" />
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>           
+</div>
