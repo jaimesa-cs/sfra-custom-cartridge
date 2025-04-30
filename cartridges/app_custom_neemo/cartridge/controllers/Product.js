@@ -148,7 +148,7 @@ function enrichViewDataFromCms(req, res) {
       if (defaultProductDetailsFound && defaultProductDetailsFound.length > 0) {
         defaultProductDetails =
           defaultProductDetailsFound[0].default_product_details;
-        showDefaultProductDetails = defaultProductDetails.show;
+        showDefaultProductDetails = true;
       }
 
       viewData.cmsProductDetails = null;

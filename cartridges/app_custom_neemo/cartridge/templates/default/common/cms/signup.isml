@@ -12,15 +12,16 @@
                 const email = emailInput.value;
                 emailInput.value  = "Signing up...";
                 jstag.send({ "email" : email });
+                jstag.call("resetPolling");
                 var myCallbackFunction = function(profile){
                 // do something here with the profile
-                    console.log(profile.data); // log full data object
-                    console.log(profile.data.user.segments); // log array of audiences the visitor is a member of
+                    // console.log(profile.data); // log full data object
+                    // console.log(profile.data.user.segments); // log array of audiences the visitor is a member of
                     // I need to reload the current page with the query string ?known_by_email=true
                     // window.location.href = window.location.href.split('?')[0] + '?known_by_email=true';
                     setTimeout(() => {
                         window.location.reload();
-                    }, 2000);
+                    }, 5000);
                     
                 }
                 jstag.call('entityReady', myCallbackFunction);
@@ -60,7 +61,7 @@
                             <form id="js-form-newsletter" action="" class="newsletter-form" novalidate="">
                                 <div class="form-group row form-holders step1">
                                     <div class="input-holder col-xs-8 col-sm-9 col-md-10">
-                                        <input type="email" class="form-control newsletter-email" id="newsletterEmail" placeholder=" " pattern="^[\w.%+-]+@[\w.-]+\.[\w]{2,7}$" required="" label="Email">
+                                        <input type="email" class="form-control newsletter-email" id="newsletterEmail" placeholder=" "  required="" label="Email">
                                         <label class="form-control-label" style="font-size: x-small" for="newsletterEmail" ${cmsUtils.cslp(block, 'input_footer')}>${block.input_footer}</label>
                                     </div>
                                     <div class="button-holder col-xs-4 col-sm-3 col-md-2">
