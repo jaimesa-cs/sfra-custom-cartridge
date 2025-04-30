@@ -18,7 +18,6 @@ const rteToHtml = (doc) => {
     renderOption: renderOption,
   });
   return fakeEntry.field;
-  // return "$Nick!!";
 };
 
 module.exports = Object.assign(
