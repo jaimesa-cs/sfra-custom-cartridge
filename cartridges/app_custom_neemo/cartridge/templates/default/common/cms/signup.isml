@@ -37,7 +37,6 @@
         
     }
 </script>
-
 <style>
 .email-signup-container {
     padding-top: 20px;
@@ -52,8 +51,7 @@
                 <div class="container">
                     <div class="row footer__email-signup">
                         <section class="col px-0 footer__email-signup-section" aria-labelledby="sign-up-header">
-                            <h2 id="sign-up-header" class="footer__email-signup-title" ${cmsUtils.cslp(block, 'heading')}>${block.heading}</h2>
-                            <p class="footer__email-signup-sub4heading" ${cmsUtils.cslp(block, 'subheading')}>${block.subheading}</p>
+                            <h2 id="sign-up-header" class="footer__email-signup-title" ${cmsUtils.cslp(block, 'heading')}>${block.heading}</h2>                     
                         </section>
                     </div>
                     <div class="row">
@@ -61,8 +59,7 @@
                             <form id="js-form-newsletter" action="" class="newsletter-form" novalidate="">
                                 <div class="form-group row form-holders step1">
                                     <div class="input-holder col-xs-8 col-sm-9 col-md-10">
-                                        <input type="email" class="form-control newsletter-email" id="newsletterEmail" placeholder=" "  required="" label="Email">
-                                        <label class="form-control-label" style="font-size: x-small" for="newsletterEmail" ${cmsUtils.cslp(block, 'input_footer')}>${block.input_footer}</label>
+                                        <input type="email" class="form-control newsletter-email" id="newsletterEmail" placeholder=" "  required="" label="Email">                                        
                                     </div>
                                     <div class="button-holder col-xs-4 col-sm-3 col-md-2">
                                         <button type="button" class="btn btn-primary  js-btn-newsletter" id="send-email" name="send-email" value="send-email" onclick="handleButtonClick()">

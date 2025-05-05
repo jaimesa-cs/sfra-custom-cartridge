@@ -16,11 +16,11 @@ const cslp = function (obj, field, index) {
 
   // if (!isLivePreviewEnabled) return {};
   // if (!areEditTagsEnabled) return {};
-  if (!data.$) return {};
+  if (!data.$) return "";
   if (index !== undefined) {
     field = `${field}__${index}`;
   }
-  if (!data.$[field]) return {};
+  if (!data.$[field]) return "";
   return data.$[field];
 };
 

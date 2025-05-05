@@ -1,5 +1,4 @@
-<isdecorate template="common/layout/page">
-
+<isdecorate template="common/layout/page">    
     <isscript>
         var assets = require('*/cartridge/scripts/assets');
         assets.addJs('/js/productDetail.js');
@@ -19,8 +18,7 @@
         <isloop items="${cmsData.elements}" var="element" status="elementStatus">
             <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
             <isset name="block" value ="${element[blockId]}" scope="page" />  
-
-
+            
             <isif condition = "${blockId === 'sign_up_form'}">
                 <div class="home-main homepage" ${cmsUtils.cslp(cmsData, 'elements', elementStatus.index)} >
                     <isinclude template="common/cms/signup" />
@@ -55,7 +53,7 @@
                         </div>
                     </div> 
                 </div>
-            </isif>
+            </isif> 
         </isloop>
     </div>
     <iscomment> Fallback to default productDetails </iscomment>
