@@ -23,6 +23,10 @@ var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils"); // Utility 
 var customUtils = require("*/cartridge/scripts/lib/custom-utils"); // Custom utility functions
 var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Service for interacting with Contentstack API
 
+var allowedOrigins = [
+  "http://localhost:3005",
+  "https://sfra-url-custom-field.contentstackapps.com",
+];
 /**
  * Constructs the request data object based on the type of request.
  * @param {string} type - The type of request (e.g., "url", "taxonomy").
@@ -189,7 +193,12 @@ server.append("Show", function (req, res, next) {
 
 // Debug route to return JSON data (for development purposes only)
 server.get("JSON", function (req, res, next) {
-  res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
+  // res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
+  const origin = req.httpHeaders.get("origin");
+  if (origin !== null && allowedOrigins.includes(origin)) {
+    res.setHttpHeader("Access-Control-Allow-Origin", origin);
+  }
+
   var productHelper = require("*/cartridge/scripts/helpers/productHelpers");
   var showProductPageHelperResult = productHelper.showProductPage(
     req.querystring,
