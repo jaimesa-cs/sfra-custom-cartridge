@@ -1,0 +1,3 @@
+[submodule "cms-extensions/sfra-url-custom-field"]
+	path = cms-extensions/sfra-url-custom-field
+	url = https://github.com/jaimesa-cs/sfra-url-custom-field.git
