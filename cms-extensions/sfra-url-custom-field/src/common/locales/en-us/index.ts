@@ -72,7 +72,7 @@ const localeTexts = {
     },
   },
   AppFailed: {
-    Message1: "The App was loaded outside Contentstack Dashboard. v1.0.1",
+    Message1: "The App was loaded outside Contentstack Dashboard. v1.0.2",
     Message2: "Please navigate to Your Stack in Contentstack where you just installed the Application ",
     body: "For Assistance, please reach out to us at support@contentstack.com",
     button: {
