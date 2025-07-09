@@ -12,7 +12,7 @@ var Locale = require("dw/util/Locale");
  * @param {Object} appendRequestData - The request data to which base data will be appended.
  * @returns {Object} The updated request data object.
  */
-const appendBaseRequestData = function (appendRequestData) {
+var appendBaseRequestData = function (appendRequestData) {
   var sitePrefs = Site.getCurrent();
   var currentLocale = Locale.getLocale(request.locale); // Get the current locale
   var language = currentLocale.language; // e.g., "en"
@@ -24,14 +24,14 @@ const appendBaseRequestData = function (appendRequestData) {
 
   var requestData = {
     endpoint: sitePrefs.getCustomPreferenceValue("cmsApiEndpoint"),
-    preview_endpoint: sitePrefs.getCustomPreferenceValue("cmsPreviewEndpoint"),
+    preview_endpoint: sitePrefs.getCustomPreferenceValue(
+      "cmsPreviewApiEndpoint"
+    ),
     access_token: sitePrefs.getCustomPreferenceValue("cmsAccessToken"),
     api_key: sitePrefs.getCustomPreferenceValue("cmsApiKey"),
     environment: sitePrefs.getCustomPreferenceValue("cmsEnvironment"),
     branch: sitePrefs.getCustomPreferenceValue("cmsBranch"), // There's a typo in Business Manager, it should be "cmsBranch"
-    edge_api_endpoint: sitePrefs.getCustomPreferenceValue(
-      "cmsPersonalizeEndpoint"
-    ),
+    edge_api_endpoint: sitePrefs.getCustomPreferenceValue("cmsEdgeApiEndpoint"),
     personalize_project_uid: sitePrefs.getCustomPreferenceValue(
       "cmsPersonalizeProjectUID"
     ),
@@ -52,7 +52,7 @@ const appendBaseRequestData = function (appendRequestData) {
  * @param {Object} requestData - The request data object.
  * @returns {string} The host URL.
  */
-const getHost = function (requestData) {
+var getHost = function (requestData) {
   var host = requestData.endpoint;
   if (requestData && requestData.live_preview) {
     host = requestData.preview_endpoint;
@@ -66,7 +66,7 @@ const getHost = function (requestData) {
  * @param {dw.svc.Service} svc - The service instance.
  * @param {Object} requestData - The request data object.
  */
-const prepareHeaders = function (svc, requestData) {
+var prepareHeaders = function (svc, requestData) {
   svc.addHeader("Content-Type", "application/json");
   svc.addHeader("api_key", requestData.api_key);
   svc.setRequestMethod(requestData.method);
@@ -97,16 +97,16 @@ const prepareHeaders = function (svc, requestData) {
  * @param {Object} requestData - The request data object.
  * @returns {dw.svc.Service} The personalization service instance.
  */
-const getPersonalizeService = function (userId, requestData) {
-  const pageUrl = requestData.pageUrl;
-  const edgeApiEndpoint = requestData.edge_api_endpoint;
-  const personalizeProjectUid = requestData.personalize_project_uid;
+var getPersonalizeService = function (userId, requestData) {
+  var pageUrl = requestData.pageUrl;
+  var edgeApiEndpoint = requestData.edge_api_endpoint;
+  var personalizeProjectUid = requestData.personalize_project_uid;
 
   var personalizeService = LocalServiceRegistry.createService(
     "Contentstack.Personalize.Service",
     {
       createRequest: function (svc, httpClient) {
-        svc.setURL(`${edgeApiEndpoint}/manifest`);
+        svc.setURL(edgeApiEndpoint + "/manifest");
         svc.addHeader("Content-Type", "application/json");
         svc.addHeader("x-project-uid", personalizeProjectUid);
         svc.addHeader("x-page-url", pageUrl);
@@ -140,7 +140,7 @@ const getPersonalizeService = function (userId, requestData) {
  * @param {Object} requestData - The request data object.
  * @returns {dw.svc.Service} The content service instance.
  */
-const getContentService = function (requestData) {
+var getContentService = function (requestData) {
   var contentstackService = LocalServiceRegistry.createService(
     "Contentstack.Content.Service",
     {
@@ -148,7 +148,17 @@ const getContentService = function (requestData) {
         var host = getHost(requestData);
         prepareHeaders(svc, requestData);
         // Construct the URL for the content request
-        const url = `${host}/${requestData.apiSlug}/entries?environment=${requestData.environment}&locale=${requestData.locale}&query=${requestData.encodedQuery}&include_dimension=true&include_applied_variants=true`;
+        var url =
+          host +
+          "/" +
+          requestData.apiSlug +
+          "/entries?environment=" +
+          requestData.environment +
+          "&locale=" +
+          requestData.locale +
+          "&query=" +
+          requestData.encodedQuery +
+          "&include_dimension=true&include_applied_variants=true";
         svc.setURL(url);
         return null;
       },
@@ -172,6 +182,117 @@ const getContentService = function (requestData) {
   return contentstackService;
 };
 
+/**
+ * Constructs the request data object based on the type of request.
+ * @param {string} type - The type of request (e.g., "url", "taxonomy").
+ * @param {Object} req - The local request object.
+ * @param {Object} request - The global controller request object.
+ * @returns {Object} The constructed request data object.
+ */
+var getRequestData = function (apiData, type, req, request) {
+  var result = {
+    //TODO: Personalize Workaround
+    pageUrl:
+      "https://" +
+      req.httpHeaders.get("x-is-host") +
+      req.httpHeaders.get("x-is-path_info") +
+      "?" +
+      req.httpHeaders.get("x-is-query_string"), // Get the URL from the request headers
+    queryType: type,
+    method: "GET",
+  };
+
+  switch (type) {
+    case "url":
+      // Content Type Based Queries
+      var slugUrl = req.httpHeaders.get("x-is-path_info"); // Get the URL from the request headers
+      result = Object.assign(result, {
+        queryType: "content_type",
+        query: '{"url":"' + slugUrl + '"}',
+        content_type_uid: apiData.content_type_uid, // Content type UID for product pages
+        apiSlug:
+          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid,
+      });
+      break;
+
+    //TODO: PARAMETERIZE THIS
+    case "taxonomy":
+      // Taxonomy-Based Queries
+      result = Object.assign(result, {
+        queryType: "taxonomy",
+        query:
+          '{ "taxonomies.page_types" : "pdp", "_content_type_uid": "product_page" }',
+        apiSlug: apiData.apiSlug || "v3/taxonomies",
+      });
+      break;
+
+    default:
+      // Default to Content Type Based Queries
+      result = Object.assign(result, {
+        queryType: "content_type",
+        query: apiData.query,
+        content_type_uid: apiData.content_type_uid,
+        apiSlug:
+          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid,
+      });
+      break;
+  }
+
+  // Encode and decode the query for safe transmission
+  if (result.query) {
+    var decodedQuery = decodeURIComponent(result.query);
+    result.encodedQuery = encodeURIComponent(decodedQuery);
+  }
+
+  // Merge additional query string parameters
+  if (req.querystring) {
+    result = Object.assign(result, req.querystring);
+  }
+
+  if (request.httpCookies && request.httpCookies["cs-personalize-user-uid"]) {
+    // Retrieve user ID from cookies for personalization
+    var userId = request.httpCookies["cs-personalize-user-uid"].value;
+    // Add personalization variant UID if available
+    appendPersonalizeData(userId, result);
+  }
+
+  return result;
+};
+/**
+ * Retrieves the personalization manifest from Contentstack.
+ *
+ * @param {string} userId - The user ID for personalization.
+ * @param {Object} requestData - The request data object.
+ * @returns {Object|null} The personalization manifest or null if the request fails.
+ */
+var getPersonalizeManifest = function (userId, requestData) {
+  var cmsRequestData = appendBaseRequestData(requestData);
+  var personalizeService = getPersonalizeService(userId, cmsRequestData);
+  var result = personalizeService.call();
+  return result.ok ? result.object : null;
+};
+
+/**
+ * Appends personalization data to the request data object.
+ *
+ * @param {string} userId - The user ID for personalization.
+ * @param {Object} requestData - The request data object.
+ */
+var appendPersonalizeData = function (userId, requestData) {
+  // Get the personalization manifest from Contentstack
+  var manifest = getPersonalizeManifest(userId, requestData);
+  if (manifest && manifest.experiences && manifest.experiences.length > 0) {
+    var experience = manifest.experiences[0];
+    if (experience) {
+      var variantUid =
+        "cs_personalize_" +
+        experience.shortUid +
+        "_" +
+        experience.activeVariantShortUid;
+      requestData.variant = variantUid;
+    }
+  }
+};
 // Exported functions for interacting with Contentstack
 module.exports = {
   /**
@@ -181,26 +302,14 @@ module.exports = {
    * @returns {Object|null} The CMS data or null if the request fails.
    */
   getCmsData: function (requestData) {
-    const cmsRequestData = appendBaseRequestData(requestData);
-    const contentstackService = getContentService(cmsRequestData);
+    var cmsRequestData = appendBaseRequestData(requestData);
+    var contentstackService = getContentService(cmsRequestData);
     var result = contentstackService.call(cmsRequestData);
-    return result.ok ? result.object : null;
-  },
-
-  /**
-   * Retrieves the personalization manifest from Contentstack.
-   *
-   * @param {string} userId - The user ID for personalization.
-   * @param {Object} requestData - The request data object.
-   * @returns {Object|null} The personalization manifest or null if the request fails.
-   */
-  getPersonalizeManifest: function (userId, requestData) {
-    const cmsRequestData = appendBaseRequestData(requestData);
-    const personalizeService = getPersonalizeService(userId, cmsRequestData);
-    var result = personalizeService.call();
-    return result.ok ? result.object : null;
+    var payload = result.ok ? result.object : null;
+    return payload;
   },
 
   // Utility function to append base request data
   appendBaseRequestData: appendBaseRequestData,
+  getRequestData: getRequestData,
 };

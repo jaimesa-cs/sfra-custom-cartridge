@@ -1,3 +1,18 @@
+/**
+ * Custom function to mimic unavailable Object.entries function
+ * @param {} obj 
+ * @returns 
+ */
+function objectEntries(obj) {
+  var result = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      result.push([key, obj[key]]);
+    }
+  }
+  return result;
+}
+
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -29,9 +44,9 @@ var extendStatics = function (d, b) {
 };
 
 function __extends(d, b) {
-  if (typeof b !== "function" && b !== null)
+  if (typeof b !== 'function' && b !== null)
     throw new TypeError(
-      "Class extends value " + String(b) + " is not a constructor or null"
+      'Class extends value ' + String(b) + ' is not a constructor or null'
     );
   extendStatics(d, b);
   function __() {
@@ -55,12 +70,12 @@ var __assign = function () {
   return __assign.apply(this, arguments);
 };
 
-typeof SuppressedError === "function"
+typeof SuppressedError === 'function'
   ? SuppressedError
   : function (error, suppressed, message) {
       var e = new Error(message);
       return (
-        (e.name = "SuppressedError"),
+        (e.name = 'SuppressedError'),
         (e.error = error),
         (e.suppressed = suppressed),
         e
@@ -69,116 +84,116 @@ typeof SuppressedError === "function"
 
 var MarkType;
 (function (MarkType) {
-  MarkType["BOLD"] = "bold";
-  MarkType["ITALIC"] = "italic";
-  MarkType["UNDERLINE"] = "underline";
-  MarkType["CLASSNAME_OR_ID"] = "classnameOrId";
-  MarkType["STRIKE_THROUGH"] = "strikethrough";
-  MarkType["INLINE_CODE"] = "inlineCode";
-  MarkType["SUBSCRIPT"] = "subscript";
-  MarkType["SUPERSCRIPT"] = "superscript";
-  MarkType["BREAK"] = "break";
+  MarkType['BOLD'] = 'bold';
+  MarkType['ITALIC'] = 'italic';
+  MarkType['UNDERLINE'] = 'underline';
+  MarkType['CLASSNAME_OR_ID'] = 'classnameOrId';
+  MarkType['STRIKE_THROUGH'] = 'strikethrough';
+  MarkType['INLINE_CODE'] = 'inlineCode';
+  MarkType['SUBSCRIPT'] = 'subscript';
+  MarkType['SUPERSCRIPT'] = 'superscript';
+  MarkType['BREAK'] = 'break';
 })(MarkType || (MarkType = {}));
 var MarkType$1 = MarkType;
 
 var NodeType;
 (function (NodeType) {
-  NodeType["DOCUMENT"] = "doc";
-  NodeType["PARAGRAPH"] = "p";
-  NodeType["LINK"] = "a";
-  NodeType["IMAGE"] = "img";
-  NodeType["EMBED"] = "embed";
-  NodeType["HEADING_1"] = "h1";
-  NodeType["HEADING_2"] = "h2";
-  NodeType["HEADING_3"] = "h3";
-  NodeType["HEADING_4"] = "h4";
-  NodeType["HEADING_5"] = "h5";
-  NodeType["HEADING_6"] = "h6";
-  NodeType["ORDER_LIST"] = "ol";
-  NodeType["UNORDER_LIST"] = "ul";
-  NodeType["LIST_ITEM"] = "li";
-  NodeType["FRAGMENT"] = "fragment";
-  NodeType["HR"] = "hr";
-  NodeType["TABLE"] = "table";
-  NodeType["TABLE_HEADER"] = "thead";
-  NodeType["TABLE_BODY"] = "tbody";
-  NodeType["TABLE_FOOTER"] = "tfoot";
-  NodeType["TABLE_ROW"] = "tr";
-  NodeType["TABLE_HEAD"] = "th";
-  NodeType["TABLE_DATA"] = "td";
-  NodeType["COL_GROUP"] = "colgroup";
-  NodeType["COL"] = "col";
-  NodeType["BLOCK_QUOTE"] = "blockquote";
-  NodeType["CODE"] = "code";
-  NodeType["TEXT"] = "text";
-  NodeType["REFERENCE"] = "reference";
+  NodeType['DOCUMENT'] = 'doc';
+  NodeType['PARAGRAPH'] = 'p';
+  NodeType['LINK'] = 'a';
+  NodeType['IMAGE'] = 'img';
+  NodeType['EMBED'] = 'embed';
+  NodeType['HEADING_1'] = 'h1';
+  NodeType['HEADING_2'] = 'h2';
+  NodeType['HEADING_3'] = 'h3';
+  NodeType['HEADING_4'] = 'h4';
+  NodeType['HEADING_5'] = 'h5';
+  NodeType['HEADING_6'] = 'h6';
+  NodeType['ORDER_LIST'] = 'ol';
+  NodeType['UNORDER_LIST'] = 'ul';
+  NodeType['LIST_ITEM'] = 'li';
+  NodeType['FRAGMENT'] = 'fragment';
+  NodeType['HR'] = 'hr';
+  NodeType['TABLE'] = 'table';
+  NodeType['TABLE_HEADER'] = 'thead';
+  NodeType['TABLE_BODY'] = 'tbody';
+  NodeType['TABLE_FOOTER'] = 'tfoot';
+  NodeType['TABLE_ROW'] = 'tr';
+  NodeType['TABLE_HEAD'] = 'th';
+  NodeType['TABLE_DATA'] = 'td';
+  NodeType['COL_GROUP'] = 'colgroup';
+  NodeType['COL'] = 'col';
+  NodeType['BLOCK_QUOTE'] = 'blockquote';
+  NodeType['CODE'] = 'code';
+  NodeType['TEXT'] = 'text';
+  NodeType['REFERENCE'] = 'reference';
 })(NodeType || (NodeType = {}));
 var NodeType$1 = NodeType;
 
 function sanitizeHTML(input, allowedTags, allowedAttributes) {
   if (allowedTags === void 0) {
     allowedTags = [
-      "p",
-      "a",
-      "strong",
-      "em",
-      "ul",
-      "ol",
-      "li",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-      "sub",
-      "u",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "th",
-      "td",
-      "span",
-      "fragment",
-      "sup",
-      "strike",
-      "br",
-      "img",
-      "colgroup",
-      "col",
-      "div",
+      'p',
+      'a',
+      'strong',
+      'em',
+      'ul',
+      'ol',
+      'li',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'sub',
+      'u',
+      'table',
+      'thead',
+      'tbody',
+      'tr',
+      'th',
+      'td',
+      'span',
+      'fragment',
+      'sup',
+      'strike',
+      'br',
+      'img',
+      'colgroup',
+      'col',
+      'div',
     ];
   }
   if (allowedAttributes === void 0) {
     allowedAttributes = [
-      "href",
-      "title",
-      "target",
-      "alt",
-      "src",
-      "class",
-      "id",
-      "style",
-      "colspan",
-      "rowspan",
-      "content-type-uid",
-      "data-sys-asset-uid",
-      "sys-style-type",
-      "data-type",
-      "data-width",
-      "data-rows",
-      "data-cols",
-      "data-mtec",
+      'href',
+      'title',
+      'target',
+      'alt',
+      'src',
+      'class',
+      'id',
+      'style',
+      'colspan',
+      'rowspan',
+      'content-type-uid',
+      'data-sys-asset-uid',
+      'sys-style-type',
+      'data-type',
+      'data-width',
+      'data-rows',
+      'data-cols',
+      'data-mtec',
     ];
   }
   // Replace newline characters with <br /> before processing the HTML tags
-  input = input.replace(/\n/g, "<br />");
+  input = input.replace(/\n/g, '<br />');
   // Regular expression to find and remove all HTML tags except the allowed ones
   var sanitized = input.replace(
     /<\/?([a-z][a-z0-9]*)\b[^<>]*>/gi,
     function (match, tag) {
-      return allowedTags.includes(tag.toLowerCase()) ? match : "";
+      return allowedTags.includes(tag.toLowerCase()) ? match : '';
     }
   );
   // Regular expression to remove all attributes except the allowed ones
@@ -194,7 +209,7 @@ function sanitizeHTML(input, allowedTags, allowedAttributes) {
         function (attributeMatch, attribute) {
           return allowedAttributes.includes(attribute.toLowerCase())
             ? attributeMatch
-            : "";
+            : '';
         }
       );
     }
@@ -206,65 +221,65 @@ var _a$1;
 var defaultNodeOption =
   ((_a$1 = {}),
   (_a$1[NodeType$1.DOCUMENT] = function (node) {
-    return "";
+    return '';
   }),
   (_a$1[NodeType$1.PARAGRAPH] = function (node, next) {
-    return "<p"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<p'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</p>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</p>');
   }),
   (_a$1[NodeType$1.LINK] = function (node, next) {
     var sanitizedHref = sanitizeHTML(node.attrs.href || node.attrs.url);
     if (node.attrs.target) {
-      return "<a"
+      return '<a'
         .concat(
-          node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ""
+          node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ''
         )
         .concat(
-          node.attrs["class-name"]
-            ? ' class="'.concat(node.attrs["class-name"], '"')
-            : ""
+          node.attrs['class-name']
+            ? ' class="'.concat(node.attrs['class-name'], '"')
+            : ''
         )
         .concat(
-          node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "",
+          node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '',
           ' href="'
         )
         .concat(sanitizedHref, '" target="')
         .concat(node.attrs.target, '">')
-        .concat(sanitizeHTML(next(node.children)), "</a>");
+        .concat(sanitizeHTML(next(node.children)), '</a>');
     }
-    return "<a"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<a'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
       .concat(
-        node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "",
+        node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '',
         ' href="'
       )
       .concat(sanitizedHref, '">')
-      .concat(sanitizeHTML(next(node.children)), "</a>");
+      .concat(sanitizeHTML(next(node.children)), '</a>');
   }),
   (_a$1[NodeType$1.IMAGE] = function (node, next) {
     var sanitizedSrc = encodeURI(
       sanitizeHTML(node.attrs.src || node.attrs.url)
     );
-    return "<img"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<img'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ' src="')
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', ' src="')
       .concat(sanitizedSrc, '" />')
       .concat(sanitizeHTML(next(node.children)));
   }),
@@ -272,400 +287,400 @@ var defaultNodeOption =
     var sanitizedSrc = encodeURI(
       sanitizeHTML(node.attrs.src || node.attrs.url)
     );
-    return "<iframe"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<iframe'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ' src="')
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', ' src="')
       .concat(sanitizedSrc, '">')
-      .concat(sanitizeHTML(next(node.children)), "</iframe>");
+      .concat(sanitizeHTML(next(node.children)), '</iframe>');
   }),
   (_a$1[NodeType$1.HEADING_1] = function (node, next) {
-    return "<h1"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h1'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h1>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h1>');
   }),
   (_a$1[NodeType$1.HEADING_2] = function (node, next) {
-    return "<h2"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h2'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h2>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h2>');
   }),
   (_a$1[NodeType$1.HEADING_3] = function (node, next) {
-    return "<h3"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h3'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h3>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h3>');
   }),
   (_a$1[NodeType$1.HEADING_4] = function (node, next) {
-    return "<h4"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h4'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h4>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h4>');
   }),
   (_a$1[NodeType$1.HEADING_5] = function (node, next) {
-    return "<h5"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h5'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h5>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h5>');
   }),
   (_a$1[NodeType$1.HEADING_6] = function (node, next) {
-    return "<h6"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<h6'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</h6>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</h6>');
   }),
   (_a$1[NodeType$1.ORDER_LIST] = function (node, next) {
-    return "<ol"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<ol'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</ol>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</ol>');
   }),
   (_a$1[NodeType$1.FRAGMENT] = function (node, next) {
-    return "<fragment>".concat(
+    return '<fragment>'.concat(
       sanitizeHTML(next(node.children)),
-      "</fragment>"
+      '</fragment>'
     );
   }),
   (_a$1[NodeType$1.UNORDER_LIST] = function (node, next) {
-    return "<ul"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<ul'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</ul>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</ul>');
   }),
   (_a$1[NodeType$1.LIST_ITEM] = function (node, next) {
-    return "<li"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<li'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</li>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</li>');
   }),
   (_a$1[NodeType$1.HR] = function (node, next) {
-    return "<hr>";
+    return '<hr>';
   }),
   (_a$1[NodeType$1.TABLE] = function (node, next) {
     // Generate colgroup if colWidths attribute is present
-    var colgroupHTML = "";
+    var colgroupHTML = '';
     if (node.attrs.colWidths && Array.isArray(node.attrs.colWidths)) {
       var totalWidth_1 = node.attrs.colWidths.reduce(function (sum, width) {
         return sum + width;
       }, 0);
-      colgroupHTML = "<"
+      colgroupHTML = '<'
         .concat(NodeType$1.COL_GROUP, ' data-width="')
         .concat(totalWidth_1, '">');
       node.attrs.colWidths.forEach(function (colWidth) {
         var widthPercentage = (colWidth / totalWidth_1) * 100;
-        colgroupHTML += "<"
+        colgroupHTML += '<'
           .concat(NodeType$1.COL, ' style="width:')
           .concat(widthPercentage.toFixed(2), '%"/>');
       });
-      colgroupHTML += "</".concat(NodeType$1.COL_GROUP, ">");
+      colgroupHTML += '</'.concat(NodeType$1.COL_GROUP, '>');
     }
     // Generate table with colgroup and other attributes
     return (
-      "<table".concat(
-        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ""
+      '<table'.concat(
+        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ''
       ) +
-      "".concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+      ''.concat(
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       ) +
-      "".concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">") +
-      "".concat(colgroupHTML) +
-      "".concat(sanitizeHTML(next(node.children))) +
-      "</table>"
+      ''.concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>') +
+      ''.concat(colgroupHTML) +
+      ''.concat(sanitizeHTML(next(node.children))) +
+      '</table>'
     );
   }),
   (_a$1[NodeType$1.TABLE_HEADER] = function (node, next) {
-    return "<thead"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<thead'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</thead>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</thead>');
   }),
   (_a$1[NodeType$1.TABLE_BODY] = function (node, next) {
-    return "<tbody"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<tbody'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</tbody>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</tbody>');
   }),
   (_a$1[NodeType$1.TABLE_FOOTER] = function (node, next) {
-    return "<tfoot"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<tfoot'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</tfoot>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</tfoot>');
   }),
   (_a$1[NodeType$1.TABLE_ROW] = function (node, next) {
-    return "<tr"
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    return '<tr'
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</tr>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</tr>');
   }),
   (_a$1[NodeType$1.TABLE_HEAD] = function (node, next) {
-    if (node.attrs.void) return "";
+    if (node.attrs.void) return '';
     return (
-      "<th" +
-      "".concat(
-        node.attrs.rowSpan ? ' rowspan="'.concat(node.attrs.rowSpan, '"') : ""
+      '<th' +
+      ''.concat(
+        node.attrs.rowSpan ? ' rowspan="'.concat(node.attrs.rowSpan, '"') : ''
       ) +
-      "".concat(
-        node.attrs.colSpan ? ' colspan="'.concat(node.attrs.colSpan, '"') : ""
+      ''.concat(
+        node.attrs.colSpan ? ' colspan="'.concat(node.attrs.colSpan, '"') : ''
       ) +
-      "".concat(
-        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ""
+      ''.concat(
+        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ''
       ) +
-      "".concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+      ''.concat(
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       ) +
-      ""
-        .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
+      ''
+        .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
         .concat(sanitizeHTML(next(node.children))) +
-      "</th>"
+      '</th>'
     );
   }),
   (_a$1[NodeType$1.TABLE_DATA] = function (node, next) {
-    if (node.attrs.void) return "";
+    if (node.attrs.void) return '';
     return (
-      "<td" +
-      "".concat(
-        node.attrs.rowSpan ? ' rowspan="'.concat(node.attrs.rowSpan, '"') : ""
+      '<td' +
+      ''.concat(
+        node.attrs.rowSpan ? ' rowspan="'.concat(node.attrs.rowSpan, '"') : ''
       ) +
-      "".concat(
-        node.attrs.colSpan ? ' colspan="'.concat(node.attrs.colSpan, '"') : ""
+      ''.concat(
+        node.attrs.colSpan ? ' colspan="'.concat(node.attrs.colSpan, '"') : ''
       ) +
-      "".concat(
-        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ""
+      ''.concat(
+        node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ''
       ) +
-      "".concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+      ''.concat(
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       ) +
-      ""
-        .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
+      ''
+        .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
         .concat(sanitizeHTML(next(node.children))) +
-      "</td>"
+      '</td>'
     );
   }),
   (_a$1[NodeType$1.BLOCK_QUOTE] = function (node, next) {
-    return "<blockquote"
+    return '<blockquote'
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</blockquote>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</blockquote>');
   }),
   (_a$1[NodeType$1.CODE] = function (node, next) {
-    return "<code"
+    return '<code'
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
-      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "", ">")
-      .concat(sanitizeHTML(next(node.children)), "</code>");
+      .concat(node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '', '>')
+      .concat(sanitizeHTML(next(node.children)), '</code>');
   }),
-  (_a$1["reference"] = function (node, next) {
+  (_a$1['reference'] = function (node, next) {
     var _a, _b, _c, _d, _e;
     if (
-      (node.attrs.type === "entry" || node.attrs.type === "asset") &&
-      node.attrs["display-type"] === "link"
+      (node.attrs.type === 'entry' || node.attrs.type === 'asset') &&
+      node.attrs['display-type'] === 'link'
     ) {
-      var aTagAttrs = ""
+      var aTagAttrs = ''
         .concat(
-          node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ""
+          node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : ''
         )
         .concat(
-          node.attrs["class-name"]
-            ? ' class="'.concat(node.attrs["class-name"], '"')
-            : ""
+          node.attrs['class-name']
+            ? ' class="'.concat(node.attrs['class-name'], '"')
+            : ''
         )
         .concat(
-          node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "",
+          node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '',
           ' href="'
         )
         .concat(node.attrs.href || node.attrs.url, '"');
       if (node.attrs.target) {
         aTagAttrs += ' target="'.concat(node.attrs.target, '"');
       }
-      if (node.attrs.type == "asset") {
+      if (node.attrs.type == 'asset') {
         aTagAttrs += ' type="asset" content-type-uid="sys_assets" '.concat(
-          node.attrs["asset-uid"]
-            ? 'data-sys-asset-uid="'.concat(node.attrs["asset-uid"], '"')
-            : "",
+          node.attrs['asset-uid']
+            ? 'data-sys-asset-uid="'.concat(node.attrs['asset-uid'], '"')
+            : '',
           ' sys-style-type="download"'
         );
       }
-      var aTag = "<a"
-        .concat(aTagAttrs, ">")
-        .concat(sanitizeHTML(next(node.children)), "</a>");
+      var aTag = '<a'
+        .concat(aTagAttrs, '>')
+        .concat(sanitizeHTML(next(node.children)), '</a>');
       return aTag;
     }
-    if (node.attrs.type === "asset") {
-      var src = encodeURI(node.attrs["asset-link"]);
+    if (node.attrs.type === 'asset') {
+      var src = encodeURI(node.attrs['asset-link']);
       var alt =
         (_b =
           (_a = node.attrs) === null || _a === void 0
             ? void 0
-            : _a["redactor-attributes"]) === null || _b === void 0
+            : _a['redactor-attributes']) === null || _b === void 0
           ? void 0
-          : _b["alt"];
+          : _b['alt'];
       var link = node.attrs.link;
-      var target = node.attrs.target || "";
+      var target = node.attrs.target || '';
       var caption =
         ((_d =
           (_c = node.attrs) === null || _c === void 0
             ? void 0
-            : _c["redactor-attributes"]) === null || _d === void 0
+            : _c['redactor-attributes']) === null || _d === void 0
           ? void 0
-          : _d["asset-caption"]) ||
+          : _d['asset-caption']) ||
         ((_e = node.attrs) === null || _e === void 0
           ? void 0
-          : _e["asset-caption"]) ||
-        "";
+          : _e['asset-caption']) ||
+        '';
       var style = node.attrs.style;
-      var asset_uid = node.attrs["asset-uid"];
-      var imageTag = "<img"
-        .concat(asset_uid ? ' asset_uid="'.concat(asset_uid, '"') : "")
+      var asset_uid = node.attrs['asset-uid'];
+      var imageTag = '<img'
+        .concat(asset_uid ? ' asset_uid="'.concat(asset_uid, '"') : '')
         .concat(
-          node.attrs["class-name"]
-            ? ' class="'.concat(sanitizeHTML(node.attrs["class-name"]), '"')
-            : ""
+          node.attrs['class-name']
+            ? ' class="'.concat(sanitizeHTML(node.attrs['class-name']), '"')
+            : ''
         )
-        .concat(src ? ' src="'.concat(sanitizeHTML(src), '"') : "")
-        .concat(alt ? ' alt="'.concat(alt, '"') : "")
-        .concat(target === "_blank" ? ' target="_blank"' : "")
-        .concat(style ? ' style="'.concat(style, '"') : "", " />");
+        .concat(src ? ' src="'.concat(sanitizeHTML(src), '"') : '')
+        .concat(alt ? ' alt="'.concat(alt, '"') : '')
+        .concat(target === '_blank' ? ' target="_blank"' : '')
+        .concat(style ? ' style="'.concat(style, '"') : '', ' />');
       return (
-        "<figure".concat(style ? ' style="'.concat(style, '"') : "", ">") +
+        '<figure'.concat(style ? ' style="'.concat(style, '"') : '', '>') +
         (link
-          ? '<a href="'.concat(link, '" target="').concat(target || "", '">')
-          : "") +
+          ? '<a href="'.concat(link, '" target="').concat(target || '', '">')
+          : '') +
         imageTag +
-        (link ? "</a>" : "") +
-        (caption ? "<figcaption>".concat(caption, "</figcaption>") : "") +
-        "</figure>"
+        (link ? '</a>' : '') +
+        (caption ? '<figcaption>'.concat(caption, '</figcaption>') : '') +
+        '</figure>'
       );
     }
-    return "";
+    return '';
   }),
-  (_a$1["default"] = function (node, next) {
+  (_a$1['default'] = function (node, next) {
     return sanitizeHTML(next(node.children));
   }),
   (_a$1[MarkType$1.BOLD] = function (text) {
-    return "<strong>".concat(sanitizeHTML(text), "</strong>");
+    return '<strong>'.concat(sanitizeHTML(text), '</strong>');
   }),
   (_a$1[MarkType$1.ITALIC] = function (text) {
-    return "<em>".concat(sanitizeHTML(text), "</em>");
+    return '<em>'.concat(sanitizeHTML(text), '</em>');
   }),
   (_a$1[MarkType$1.UNDERLINE] = function (text) {
-    return "<u>".concat(sanitizeHTML(text), "</u>");
+    return '<u>'.concat(sanitizeHTML(text), '</u>');
   }),
   (_a$1[MarkType$1.STRIKE_THROUGH] = function (text) {
-    return "<strike>".concat(sanitizeHTML(text), "</strike>");
+    return '<strike>'.concat(sanitizeHTML(text), '</strike>');
   }),
   (_a$1[MarkType$1.INLINE_CODE] = function (text) {
-    return "<span data-type='inlineCode'>".concat(
+    return '<span data-type=\'inlineCode\'>'.concat(
       sanitizeHTML(text),
-      "</span>"
+      '</span>'
     );
   }),
   (_a$1[MarkType$1.SUBSCRIPT] = function (text) {
-    return "<sub>".concat(sanitizeHTML(text), "</sub>");
+    return '<sub>'.concat(sanitizeHTML(text), '</sub>');
   }),
   (_a$1[MarkType$1.SUPERSCRIPT] = function (text) {
-    return "<sup>".concat(sanitizeHTML(text), "</sup>");
+    return '<sup>'.concat(sanitizeHTML(text), '</sup>');
   }),
   (_a$1[MarkType$1.BREAK] = function (text) {
-    return "<br />".concat(sanitizeHTML(text));
+    return '<br />'.concat(sanitizeHTML(text));
   }),
   (_a$1[MarkType$1.CLASSNAME_OR_ID] = function (text, classname, id) {
-    return "<span"
-      .concat(classname ? ' class="'.concat(classname, '"') : "")
-      .concat(id ? ' id="'.concat(id, '"') : "", ">")
-      .concat(sanitizeHTML(text), "</span>");
+    return '<span'
+      .concat(classname ? ' class="'.concat(classname, '"') : '')
+      .concat(id ? ' id="'.concat(id, '"') : '', '>')
+      .concat(sanitizeHTML(text), '</span>');
   }),
   _a$1);
 
 var StyleType;
 (function (StyleType) {
-  StyleType["BLOCK"] = "block";
-  StyleType["INLINE"] = "inline";
-  StyleType["LINK"] = "link";
-  StyleType["DISPLAY"] = "display";
-  StyleType["DOWNLOAD"] = "download";
+  StyleType['BLOCK'] = 'block';
+  StyleType['INLINE'] = 'inline';
+  StyleType['LINK'] = 'link';
+  StyleType['DISPLAY'] = 'display';
+  StyleType['DOWNLOAD'] = 'download';
 })(StyleType || (StyleType = {}));
 var StyleType$1 = StyleType;
 
@@ -676,46 +691,46 @@ var defaultOptions =
     var title = sanitizeHTML(item.title || item.uid);
     var content_type_uid = sanitizeHTML(
       item._content_type_uid ||
-        (item.system ? item.system.content_type_uid : "")
+        (item.system ? item.system.content_type_uid : '')
     );
-    return "<div><p>"
-      .concat(title, "</p><p>Content type: <span>")
-      .concat(content_type_uid, "</span></p></div>");
+    return '<div><p>'
+      .concat(title, '</p><p>Content type: <span>')
+      .concat(content_type_uid, '</span></p></div>');
   }),
   (_a[StyleType$1.INLINE] = function (item) {
     var title = sanitizeHTML(item.title || item.uid);
-    return "<span>".concat(title, "</span>");
+    return '<span>'.concat(title, '</span>');
   }),
   (_a[StyleType$1.LINK] = function (item, metadata) {
-    var url = encodeURI(sanitizeHTML(item.url || "undefined"));
+    var url = encodeURI(sanitizeHTML(item.url || 'undefined'));
     var text = sanitizeHTML(
       metadata.text ||
         item.title ||
         item.uid ||
-        (item.system ? item.system.uid : "")
+        (item.system ? item.system.uid : '')
     );
-    return '<a href="'.concat(url, '">').concat(text, "</a>");
+    return '<a href="'.concat(url, '">').concat(text, '</a>');
   }),
   (_a[StyleType$1.DISPLAY] = function (item, metadata) {
-    var url = encodeURI(sanitizeHTML(item.url || "undefined"));
+    var url = encodeURI(sanitizeHTML(item.url || 'undefined'));
     var alt = sanitizeHTML(
       metadata.attributes.alt ||
         item.title ||
         item.filename ||
         item.uid ||
-        (item.system ? item.system.uid : "")
+        (item.system ? item.system.uid : '')
     );
     return '<img src="'.concat(url, '" alt="').concat(alt, '" />');
   }),
   (_a[StyleType$1.DOWNLOAD] = function (item, metadata) {
-    var href = encodeURI(sanitizeHTML(item.url || "undefined"));
+    var href = encodeURI(sanitizeHTML(item.url || 'undefined'));
     var text = sanitizeHTML(
       metadata.text ||
         item.title ||
         item.uid ||
-        (item.system ? item.system.content_type_uid : "")
+        (item.system ? item.system.content_type_uid : '')
     );
-    return '<a href="'.concat(href, '">').concat(text, "</a>");
+    return '<a href="'.concat(href, '">').concat(text, '</a>');
   }),
   _a);
 
@@ -751,7 +766,7 @@ function findEmbeddedAsset(uid, embeddedAssets) {
   });
 }
 function findGQLEmbeddedItems(metadata, items) {
-  if (metadata.itemType === "entry") {
+  if (metadata.itemType === 'entry') {
     return findEmbeddedEntry(metadata.itemUid, metadata.contentTypeUid, items);
   } else {
     return findEmbeddedAsset(metadata.itemUid, items);
@@ -774,39 +789,39 @@ function findEmbeddedItems(object, entry) {
 }
 function findRenderString(item, metadata, renderOptions) {
   if ((!item && item === undefined) || (!metadata && metadata === undefined)) {
-    return "";
+    return '';
   }
   if (renderOptions && renderOptions[metadata.styleType] !== undefined) {
     var renderFunction = renderOptions[metadata.styleType];
     if (
-      metadata.attributes["data-sys-content-type-uid"] !== undefined &&
-      typeof renderFunction !== "function" &&
-      renderFunction[metadata.attributes["data-sys-content-type-uid"]] !==
+      metadata.attributes['data-sys-content-type-uid'] !== undefined &&
+      typeof renderFunction !== 'function' &&
+      renderFunction[metadata.attributes['data-sys-content-type-uid']] !==
         undefined
     ) {
-      return renderFunction[metadata.attributes["data-sys-content-type-uid"]](
+      return renderFunction[metadata.attributes['data-sys-content-type-uid']](
         item,
         metadata
       );
     } else if (
-      metadata.attributes["data-sys-content-type-uid"] !== undefined &&
-      typeof renderFunction !== "function" &&
+      metadata.attributes['data-sys-content-type-uid'] !== undefined &&
+      typeof renderFunction !== 'function' &&
       renderFunction.$default !== undefined
     ) {
       return renderFunction.$default(item, metadata);
     } else if (
       metadata.contentTypeUid !== undefined &&
-      typeof renderFunction !== "function" &&
+      typeof renderFunction !== 'function' &&
       renderFunction[metadata.contentTypeUid] !== undefined
     ) {
       return renderFunction[metadata.contentTypeUid](item, metadata);
     } else if (
       metadata.contentTypeUid !== undefined &&
-      typeof renderFunction !== "function" &&
+      typeof renderFunction !== 'function' &&
       renderFunction.$default !== undefined
     ) {
       return renderFunction.$default(item, metadata);
-    } else if (typeof renderFunction === "function") {
+    } else if (typeof renderFunction === 'function') {
       return renderFunction(item, metadata);
     }
   }
@@ -821,7 +836,7 @@ function enumerate(entries, process) {
   }
 }
 function enumerateContents(content, renderOption, renderEmbed) {
-  if (!(content instanceof Array) && content.type !== "doc") {
+  if (!(content instanceof Array) && content.type !== 'doc') {
     return content;
   }
   if (content instanceof Array) {
@@ -880,46 +895,46 @@ function referenceToHTML(node, renderOption, renderEmbed) {
     return renderOption[referenceNode.type](referenceNode, next);
   }
   if (
-    (node.attrs.type === "entry" || node.attrs.type === "asset") &&
-    node.attrs["display-type"] === "link"
+    (node.attrs.type === 'entry' || node.attrs.type === 'asset') &&
+    node.attrs['display-type'] === 'link'
   ) {
     var entryText = node.children
       ? nodeChildrenToHTML(node.children, renderOption, renderEmbed)
-      : "";
+      : '';
     if (renderOption[node.type] !== undefined) {
       return sendToRenderOption(node);
     }
-    var aTagAttrs = ""
-      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : "")
+    var aTagAttrs = ''
+      .concat(node.attrs.style ? ' style="'.concat(node.attrs.style, '"') : '')
       .concat(
-        node.attrs["class-name"]
-          ? ' class="'.concat(node.attrs["class-name"], '"')
-          : ""
+        node.attrs['class-name']
+          ? ' class="'.concat(node.attrs['class-name'], '"')
+          : ''
       )
       .concat(
-        node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : "",
+        node.attrs.id ? ' id="'.concat(node.attrs.id, '"') : '',
         ' href="'
       )
       .concat(node.attrs.href || node.attrs.url, '"');
     if (node.attrs.target) {
       aTagAttrs += ' target="'.concat(node.attrs.target, '"');
     }
-    if (node.attrs.type == "asset") {
+    if (node.attrs.type == 'asset') {
       aTagAttrs += ' type="asset" content-type-uid="sys_assets" '.concat(
-        node.attrs["asset-uid"]
-          ? 'data-sys-asset-uid="'.concat(node.attrs["asset-uid"], '"')
-          : "",
+        node.attrs['asset-uid']
+          ? 'data-sys-asset-uid="'.concat(node.attrs['asset-uid'], '"')
+          : '',
         ' sys-style-type="download"'
       );
     }
-    var aTag = "<a".concat(aTagAttrs, ">").concat(entryText, "</a>");
+    var aTag = '<a'.concat(aTagAttrs, '>').concat(entryText, '</a>');
     return aTag;
   }
   if (!renderEmbed && renderOption[node.type] !== undefined) {
     return sendToRenderOption(node);
   }
   if (!renderEmbed) {
-    return "";
+    return '';
   }
   var metadata = nodeToMetadata(
     node.attrs,
@@ -936,18 +951,18 @@ function nodeChildrenToHTML(nodes, renderOption, renderEmbed) {
     .map(function (node) {
       return nodeToHTML(node, renderOption, renderEmbed);
     })
-    .join("");
+    .join('');
 }
 function styleObjectToString(styleObj) {
-  if (!styleObj) return "";
-  if (typeof styleObj === "string") {
+  if (!styleObj) return '';
+  if (typeof styleObj === 'string') {
     return styleObj;
   }
-  var styleString = "";
+  var styleString = '';
   for (var key in styleObj) {
     if (styleObj.hasOwnProperty(key)) {
       var value = styleObj[key];
-      styleString += "".concat(key, ":").concat(value, ";");
+      styleString += ''.concat(key, ':').concat(value, ';');
     }
   }
   return styleString;
@@ -964,7 +979,7 @@ function nodeToHTML(node, renderOption, renderEmbed) {
   }
   if (!node.type) {
     return textNodeToHTML(node, renderOption);
-  } else if (node.type === "reference") {
+  } else if (node.type === 'reference') {
     return referenceToHTML(node, renderOption, renderEmbed);
   } else {
     var next = function (nodes) {
@@ -979,35 +994,35 @@ function nodeToHTML(node, renderOption, renderEmbed) {
 }
 function replaceHtmlEntities(text) {
   return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
-var forbiddenAttrChars = ['"', "'", ">", "<", "/", "="];
+var forbiddenAttrChars = ['"', '\'', '>', '<', '/', '='];
 
 function createMetadata(attribute) {
   return {
-    text: attribute["#text"],
-    itemUid: attribute["data-sys-entry-uid"] || attribute["data-sys-asset-uid"],
+    text: attribute['#text'],
+    itemUid: attribute['data-sys-entry-uid'] || attribute['data-sys-asset-uid'],
     itemType: attribute.type,
-    styleType: attribute["sys-style-type"],
+    styleType: attribute['sys-style-type'],
     attributes: attribute,
-    contentTypeUid: attribute["data-sys-content-type-uid"],
+    contentTypeUid: attribute['data-sys-content-type-uid'],
   };
 }
 function nodeToMetadata(attribute, textNode) {
   return {
     text: textNode.text,
-    itemUid: attribute["entry-uid"] || attribute["asset-uid"],
+    itemUid: attribute['entry-uid'] || attribute['asset-uid'],
     itemType: attribute.type,
-    styleType: attribute["display-type"],
+    styleType: attribute['display-type'],
     attributes: attribute,
-    contentTypeUid: attribute["content-type-uid"],
+    contentTypeUid: attribute['content-type-uid'],
   };
 }
 function attributeToString(attributes) {
-  var result = "";
+  var result = '';
   var _loop_1 = function (key) {
     if (Object.prototype.hasOwnProperty.call(attributes, key)) {
       if (
@@ -1015,24 +1030,24 @@ function attributeToString(attributes) {
           return key.includes(char);
         })
       ) {
-        return "continue";
+        return 'continue';
       }
       var value = attributes[key];
       if (Array.isArray(value)) {
-        value = value.join(", ");
-      } else if (typeof value === "object") {
-        var elementString = "";
+        value = value.join(', ');
+      } else if (typeof value === 'object') {
+        var elementString = '';
         for (var subKey in value) {
           if (Object.prototype.hasOwnProperty.call(value, subKey)) {
             var subValue = value[subKey];
-            if (subValue != null && subValue !== "") {
-              elementString += "".concat(subKey, ":").concat(subValue, "; ");
+            if (subValue != null && subValue !== '') {
+              elementString += ''.concat(subKey, ':').concat(subValue, '; ');
             }
           }
         }
         value = elementString;
       }
-      result += " "
+      result += ' '
         .concat(key, '="')
         .concat(replaceHtmlEntities(String(value)), '"');
     }
@@ -1057,25 +1072,25 @@ function elementToJson(element) {
 function parseElement(node) {
   var obj = {};
   if (node.nodeType === 3) {
-    obj["#text"] = node.textContent;
+    obj['#text'] = node.textContent;
   } else if (node.nodeType === 1) {
     obj[node.nodeName.toLowerCase()] = elementToJson(node);
   }
   return obj;
 }
 
-var frameflag = "documentfragmentcontainer";
+var frameflag = 'documentfragmentcontainer';
 function forEachEmbeddedItem(str, callbackfn) {
-  var frameflag = "documentfragmentcontainer";
-  var wrappedStr = `<${frameflag}>${str}</${frameflag}>`;
-  var root = new DOMParser().parseFromString(wrappedStr, "text/html");
+  var frameflag = 'documentfragmentcontainer';
+  var wrappedStr = '<' + frameflag + '>' + str + '</' + frameflag + '>';
+  var root = new DOMParser().parseFromString(wrappedStr, 'text/html');
 
-  var embeddedEntries = root.querySelectorAll(".embedded-entry");
+  var embeddedEntries = root.querySelectorAll('.embedded-entry');
   embeddedEntries.forEach(function (element) {
     callbackfn(element.outerHTML, createMetadata(elementToJson(element)));
   });
 
-  var embeddedAssets = root.querySelectorAll(".embedded-asset");
+  var embeddedAssets = root.querySelectorAll('.embedded-asset');
   embeddedAssets.forEach(function (element) {
     callbackfn(element.outerHTML, createMetadata(elementToJson(element)));
   });
@@ -1084,11 +1099,11 @@ function forEachEmbeddedItem(str, callbackfn) {
 function renderContent(content, option) {
   // Return blank if content is not present
   if (!content || content === undefined) {
-    return "";
+    return '';
   }
 
   // Render content of type string
-  if (typeof content === "string") {
+  if (typeof content === 'string') {
     var contentToReplace = content;
     forEachEmbeddedItem(content, function (embeddedObjectTag, object) {
       contentToReplace = findAndReplaceEmbeddedItem(
@@ -1112,7 +1127,7 @@ function renderContent(content, option) {
 // Export the utility function if needed elsewhere
 
 function findRenderContent(keyPaths, entry, render) {
-  getContent(keyPaths.split("."), entry, render);
+  getContent(keyPaths.split('.'), entry, render);
 }
 function getContent(keys, object, render) {
   if (keys) {
@@ -1128,7 +1143,7 @@ function getContent(keys, object, render) {
             var objKey = _a[_i];
             getContent(newKeys, objKey, render);
           }
-        } else if (typeof object[key] === "object") {
+        } else if (typeof object[key] === 'object') {
           getContent(newKeys, object[key], render);
         }
       }
@@ -1294,7 +1309,7 @@ var GQL = {
 function addTags(entry, contentTypeUid, tagsAsObject, locale) {
   var _a;
   if (locale === void 0) {
-    locale = "en-us";
+    locale = 'en-us';
   }
   if (entry) {
     var appliedVariants =
@@ -1306,13 +1321,13 @@ function addTags(entry, contentTypeUid, tagsAsObject, locale) {
       null;
     entry.$ = getTag(
       entry,
-      "".concat(contentTypeUid, ".").concat(entry.uid, ".").concat(locale),
+      ''.concat(contentTypeUid, '.').concat(entry.uid, '.').concat(locale),
       tagsAsObject,
       locale,
       {
         _applied_variants: appliedVariants,
         shouldApplyVariant: !!appliedVariants,
-        metaKey: "",
+        metaKey: '',
       }
     );
   }
@@ -1322,123 +1337,154 @@ function getTag(content, prefix, tagsAsObject, locale, appliedVariants) {
   appliedVariants.metaKey;
   var shouldApplyVariant = appliedVariants.shouldApplyVariant,
     _applied_variants = appliedVariants._applied_variants;
-  Object.entries(content).forEach(function (_a) {
-    var key = _a[0],
-      value = _a[1];
-    if (key === "$") return;
-    var metaUID =
-      value &&
-      typeof value === "object" &&
-      value._metadata &&
-      value._metadata.uid
-        ? value._metadata.uid
+    objectEntries(content).forEach(function (_a) {
+      var key = _a[0],
+        value = _a[1];
+      if (key === "$") return;
+      var metaUID =
+        value &&
+        typeof value === "object" &&
+        value._metadata &&
+        value._metadata.uid
+          ? value._metadata.uid
+          : "";
+      var updatedMetakey = appliedVariants.shouldApplyVariant
+        ? ""
+            .concat(
+              appliedVariants.metaKey ? appliedVariants.metaKey + "." : ""
+            )
+            .concat(key)
         : "";
-    var updatedMetakey = appliedVariants.shouldApplyVariant
-      ? ""
-          .concat(appliedVariants.metaKey ? appliedVariants.metaKey + "." : "")
-          .concat(key)
-      : "";
-    if (metaUID && updatedMetakey)
-      updatedMetakey = updatedMetakey + "." + metaUID;
-    switch (typeof value) {
-      case "object":
-        if (Array.isArray(value)) {
-          value.forEach(function (obj, index) {
-            var _a;
-            var childKey = "".concat(key, "__").concat(index);
-            var parentKey = "".concat(key, "__parent");
-            metaUID =
-              value &&
-              typeof value === "object" &&
-              obj._metadata &&
-              obj._metadata.uid
-                ? obj._metadata.uid
+      if (metaUID && updatedMetakey)
+        updatedMetakey = updatedMetakey + "." + metaUID;
+      switch (typeof value) {
+        case "object":
+          if (Array.isArray(value)) {
+            value.forEach(function (obj, index) {
+              var _a;
+              var childKey = "".concat(key, "__").concat(index);
+              var parentKey = "".concat(key, "__parent");
+              metaUID =
+                value &&
+                typeof value === "object" &&
+                obj._metadata &&
+                obj._metadata.uid
+                  ? obj._metadata.uid
+                  : "";
+              updatedMetakey = appliedVariants.shouldApplyVariant
+                ? ""
+                    .concat(
+                      appliedVariants.metaKey
+                        ? appliedVariants.metaKey + "."
+                        : ""
+                    )
+                    .concat(key)
                 : "";
-            updatedMetakey = appliedVariants.shouldApplyVariant
-              ? ""
-                  .concat(
-                    appliedVariants.metaKey ? appliedVariants.metaKey + "." : ""
-                  )
-                  .concat(key)
-              : "";
-            if (metaUID && updatedMetakey)
-              updatedMetakey = updatedMetakey + "." + metaUID;
-            /**
-             * Indexes of array are handled here
-             * {
-             *  "array": ["hello", "world"],
-             *  "$": {
-             *      "array": {"data-cslp": "content_type_uid.entry_uid.locale.array"}
-             *      "array__0": {"data-cslp": "content_type_uid.entry_uid.locale.array.0"}
-             *      "array__1": {"data-cslp": "content_type_uid.entry_uid.locale.array.1"}
-             *  }
-             * }
-             */
-            tags[childKey] = getTagsValue(
-              "".concat(prefix, ".").concat(key, ".").concat(index),
-              tagsAsObject,
-              {
-                _applied_variants: _applied_variants,
-                shouldApplyVariant: shouldApplyVariant,
-                metaKey: updatedMetakey,
-              }
-            );
-            tags[parentKey] = getParentTagsValue(
-              "".concat(prefix, ".").concat(key),
-              tagsAsObject
-            );
-            if (
-              typeof obj !== "undefined" &&
-              obj !== null &&
-              obj._content_type_uid !== undefined &&
-              obj.uid !== undefined
-            ) {
+              if (metaUID && updatedMetakey)
+                updatedMetakey = updatedMetakey + "." + metaUID;
               /**
-               * References are handled here
+               * Indexes of array are handled here
                * {
-               *  "reference": [{
-               *      "title": "title",
-               *      "uid": "ref_uid",
-               *      "_content_type_uid": "ref_content_type_uid",
-               *     "$": {"title": {"data-cslp": "ref_content_type_uid.ref_uid.locale.title"}}
-               *  }]
+               *  "array": ["hello", "world"],
+               *  "$": {
+               *      "array": {"data-cslp": "content_type_uid.entry_uid.locale.array"}
+               *      "array__0": {"data-cslp": "content_type_uid.entry_uid.locale.array.0"}
+               *      "array__1": {"data-cslp": "content_type_uid.entry_uid.locale.array.1"}
+               *  }
                * }
                */
-              var newAppliedVariants =
-                obj._applied_variants ||
-                ((_a = obj === null || obj === void 0 ? void 0 : obj.system) ===
-                  null || _a === void 0
-                  ? void 0
-                  : _a.applied_variants) ||
-                _applied_variants;
-              var newShouldApplyVariant = !!newAppliedVariants;
-              value[index].$ = getTag(
-                obj,
-                ""
-                  .concat(obj._content_type_uid, ".")
-                  .concat(obj.uid, ".")
-                  .concat(obj.locale || locale),
+              tags[childKey] = getTagsValue(
+                "".concat(prefix, ".").concat(key, ".").concat(index),
                 tagsAsObject,
-                locale,
                 {
-                  _applied_variants: newAppliedVariants,
-                  shouldApplyVariant: newShouldApplyVariant,
-                  metaKey: "",
+                  _applied_variants: _applied_variants,
+                  shouldApplyVariant: shouldApplyVariant,
+                  metaKey: updatedMetakey,
                 }
               );
-            } else if (typeof obj === "object") {
+              tags[parentKey] = getParentTagsValue(
+                "".concat(prefix, ".").concat(key),
+                tagsAsObject
+              );
+              if (
+                typeof obj !== "undefined" &&
+                obj !== null &&
+                obj._content_type_uid !== undefined &&
+                obj.uid !== undefined
+              ) {
+                /**
+                 * References are handled here
+                 * {
+                 *  "reference": [{
+                 *      "title": "title",
+                 *      "uid": "ref_uid",
+                 *      "_content_type_uid": "ref_content_type_uid",
+                 *     "$": {"title": {"data-cslp": "ref_content_type_uid.ref_uid.locale.title"}}
+                 *  }]
+                 * }
+                 */
+                var newAppliedVariants =
+                  obj._applied_variants ||
+                  ((_a =
+                    obj === null || obj === void 0 ? void 0 : obj.system) ===
+                    null || _a === void 0
+                    ? void 0
+                    : _a.applied_variants) ||
+                  _applied_variants;
+                var newShouldApplyVariant = !!newAppliedVariants;
+                value[index].$ = getTag(
+                  obj,
+                  ""
+                    .concat(obj._content_type_uid, ".")
+                    .concat(obj.uid, ".")
+                    .concat(obj.locale || locale),
+                  tagsAsObject,
+                  locale,
+                  {
+                    _applied_variants: newAppliedVariants,
+                    shouldApplyVariant: newShouldApplyVariant,
+                    metaKey: "",
+                  }
+                );
+              } else if (typeof obj === "object") {
+                /**
+                 * Objects inside Array like modular blocks are handled here
+                 * {
+                 *  "array": [{
+                 *    "title": "title",
+                 *    "$": {"title": {"data-cslp": "content_type_uid.entry_uid.locale.array.0.title"}}
+                 *  }]
+                 * }
+                 */
+                obj.$ = getTag(
+                  obj,
+                  "".concat(prefix, ".").concat(key, ".").concat(index),
+                  tagsAsObject,
+                  locale,
+                  {
+                    _applied_variants: _applied_variants,
+                    shouldApplyVariant: shouldApplyVariant,
+                    metaKey: updatedMetakey,
+                  }
+                );
+              }
+            });
+          } else {
+            if (value) {
               /**
-               * Objects inside Array like modular blocks are handled here
+               * Objects are handled here
                * {
-               *  "array": [{
-               *    "title": "title",
-               *    "$": {"title": {"data-cslp": "content_type_uid.entry_uid.locale.array.0.title"}}
-               *  }]
+               *  "object": {
+               *      "title": "title",
+               *      "$": {
+               *          "title": {"data-cslp": "content_type_uid.entry_uid.locale.object.title"}
+               *      }
+               *  },
                * }
                */
-              obj.$ = getTag(
-                obj,
-                "".concat(prefix, ".").concat(key, ".").concat(index),
+              value.$ = getTag(
+                value,
+                "".concat(prefix, ".").concat(key),
                 tagsAsObject,
                 locale,
                 {
@@ -1448,74 +1494,48 @@ function getTag(content, prefix, tagsAsObject, locale, appliedVariants) {
                 }
               );
             }
-          });
-        } else {
-          if (value) {
-            /**
-             * Objects are handled here
-             * {
-             *  "object": {
-             *      "title": "title",
-             *      "$": {
-             *          "title": {"data-cslp": "content_type_uid.entry_uid.locale.object.title"}
-             *      }
-             *  },
-             * }
-             */
-            value.$ = getTag(
-              value,
-              "".concat(prefix, ".").concat(key),
-              tagsAsObject,
-              locale,
-              {
-                _applied_variants: _applied_variants,
-                shouldApplyVariant: shouldApplyVariant,
-                metaKey: updatedMetakey,
-              }
-            );
           }
-        }
-        /**
-         * {
-         *  "object": {
-         *      "title": "title",
-         *  },
-         *  "array": ["hello", "world"]
-         *  "$": {
-         *      "object": {"data-cslp": "content_type_uid.entry_uid.locale.object"},
-         *      "array": {"data-cslp": "content_type_uid.entry_uid.locale.array"}
-         *  }
-         * }
-         */
-        tags[key] = getTagsValue(
-          "".concat(prefix, ".").concat(key),
-          tagsAsObject,
-          {
-            _applied_variants: _applied_variants,
-            shouldApplyVariant: shouldApplyVariant,
-            metaKey: updatedMetakey,
-          }
-        );
-        break;
-      default:
-        /**
-         * All primitive values are handled here
-         * {
-         *  "title": "title",
-         *  "$": {title: {"data-cslp": "content_type_uid.entry_uid.locale.title"}}
-         * }
-         */
-        tags[key] = getTagsValue(
-          "".concat(prefix, ".").concat(key),
-          tagsAsObject,
-          {
-            _applied_variants: _applied_variants,
-            shouldApplyVariant: shouldApplyVariant,
-            metaKey: updatedMetakey,
-          }
-        );
-    }
-  });
+          /**
+           * {
+           *  "object": {
+           *      "title": "title",
+           *  },
+           *  "array": ["hello", "world"]
+           *  "$": {
+           *      "object": {"data-cslp": "content_type_uid.entry_uid.locale.object"},
+           *      "array": {"data-cslp": "content_type_uid.entry_uid.locale.array"}
+           *  }
+           * }
+           */
+          tags[key] = getTagsValue(
+            "".concat(prefix, ".").concat(key),
+            tagsAsObject,
+            {
+              _applied_variants: _applied_variants,
+              shouldApplyVariant: shouldApplyVariant,
+              metaKey: updatedMetakey,
+            }
+          );
+          break;
+        default:
+          /**
+           * All primitive values are handled here
+           * {
+           *  "title": "title",
+           *  "$": {title: {"data-cslp": "content_type_uid.entry_uid.locale.title"}}
+           * }
+           */
+          tags[key] = getTagsValue(
+            "".concat(prefix, ".").concat(key),
+            tagsAsObject,
+            {
+              _applied_variants: _applied_variants,
+              shouldApplyVariant: shouldApplyVariant,
+              metaKey: updatedMetakey,
+            }
+          );
+      }
+    });
   return tags;
 }
 function getTagsValue(dataValue, tagsAsObject, appliedVariants) {
@@ -1526,21 +1546,21 @@ function getTagsValue(dataValue, tagsAsObject, appliedVariants) {
   ) {
     var variant = appliedVariants._applied_variants[appliedVariants.metaKey];
     // Adding v2 prefix to the cslp tag. New cslp tags are in v2 format. ex: v2:content_type_uid.entry_uid.locale.title
-    var newDataValueArray = ("v2:" + dataValue).split(".");
-    newDataValueArray[1] = newDataValueArray[1] + "_" + variant;
-    dataValue = newDataValueArray.join(".");
+    var newDataValueArray = ('v2:' + dataValue).split('.');
+    newDataValueArray[1] = newDataValueArray[1] + '_' + variant;
+    dataValue = newDataValueArray.join('.');
   }
   if (tagsAsObject) {
-    return { "data-cslp": dataValue };
+    return { 'data-cslp': dataValue };
   } else {
-    return "data-cslp=".concat(dataValue);
+    return 'data-cslp='.concat(dataValue);
   }
 }
 function getParentTagsValue(dataValue, tagsAsObject) {
   if (tagsAsObject) {
-    return { "data-cslp-parent-field": dataValue };
+    return { 'data-cslp-parent-field': dataValue };
   } else {
-    return "data-cslp-parent-field=".concat(dataValue);
+    return 'data-cslp-parent-field='.concat(dataValue);
   }
 }
 
@@ -1551,7 +1571,7 @@ function updateAssetURLForGQL(gqlResponse) {
         ? void 0
         : gqlResponse.data;
     for (var contentType in response) {
-      if ("items" in response[contentType]) {
+      if ('items' in response[contentType]) {
         var entries = response[contentType].items;
         entries.forEach(function (entry) {
           processEntry(entry);
@@ -1561,7 +1581,7 @@ function updateAssetURLForGQL(gqlResponse) {
       }
     }
   } catch (error) {
-    console.error("Error in updating asset URL for GQL response", error);
+    console.error('Error in updating asset URL for GQL response', error);
   }
 }
 function processEntry(entry) {
@@ -1571,7 +1591,7 @@ function processEntry(entry) {
       fieldData.forEach(function (data) {
         findRTEFieldAndUpdateURL(data);
       });
-    } else if (fieldData && typeof fieldData === "object") {
+    } else if (fieldData && typeof fieldData === 'object') {
       findRTEFieldAndUpdateURL(fieldData);
     }
   }
@@ -1600,7 +1620,7 @@ function findRTEFieldAndUpdateURL(fieldData) {
           ? void 0
           : _a.uid)
       )
-        throw new Error("Asset UID not found in the response");
+        throw new Error('Asset UID not found in the response');
       var correspondingAsset =
         (_c =
           (_b =
@@ -1611,9 +1631,9 @@ function findRTEFieldAndUpdateURL(fieldData) {
             : _b.children) === null || _c === void 0
           ? void 0
           : _c.find(function (child) {
-              return child.attrs["asset-uid"] === node.system.uid;
+              return child.attrs['asset-uid'] === node.system.uid;
             });
-      correspondingAsset.attrs["asset-link"] = node.url;
+      correspondingAsset.attrs['asset-link'] = node.url;
     }
   });
 }
@@ -1622,7 +1642,7 @@ function findRTEField(fieldData) {
     return fieldData;
   }
   for (var key in fieldData) {
-    if (fieldData[key] && typeof fieldData[key] === "object") {
+    if (fieldData[key] && typeof fieldData[key] === 'object') {
       var found = findRTEField(fieldData[key]);
       if (found) {
         return found;
@@ -1632,18 +1652,17 @@ function findRTEField(fieldData) {
 }
 
 module.exports = {
-  Document,
-  GQL,
+  Document: Document,
+  GQL: GQL,
   MarkType: MarkType$1,
-  Node,
+  Node: Node,
   NodeType: NodeType$1,
   StyleType: StyleType$1,
-  TextNode,
+  TextNode: TextNode,
   addEditableTags: addTags,
-  attributeToString,
+  attributeToString: attributeToString,
   jsonToHTML: jsonToHTML$1,
-  render,
-  renderContent,
-  updateAssetURLForGQL,
+  render: render,
+  renderContent: renderContent,
+  updateAssetURLForGQL: updateAssetURLForGQL,
 };
-//# sourceMappingURL=bundle.js.map

@@ -18,10 +18,10 @@ const cslp = function (obj, field, index) {
   // if (!areEditTagsEnabled) return {};
   if (!data.$) return "";
   if (index !== undefined) {
-    field = `${field}__${index}`;
+    field = field + "__" + index;
   }
   if (!data.$[field]) return "";
   return data.$[field];
 };
 
-module.exports = { isJsonRteEmpty, cslp };
+module.exports = { isJsonRteEmpty: isJsonRteEmpty, cslp: cslp };

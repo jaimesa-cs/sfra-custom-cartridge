@@ -1,0 +1,13 @@
+<div class="container content-asset-container">
+    <isif condition="${block.title}">
+        <h1 class="content-header" ${cmsUtils.cslp(block, 'title')}>${block.title}</h1>
+    </isif>
+    <isif condition="${block.subtitle}">
+        <h2 class="content-header" ${cmsUtils.cslp(block, 'subtitle')}>${block.subtitle}</h2>
+    </isif>
+    <isif condition="${block.body}">
+        <div ${cmsUtils.cslp(cmsData, 'body')}>
+            <isprint value="${cmsHelper.rteToHtml(block.body)}" encoding="off" />
+        </div>
+    </isif>    
+</div>

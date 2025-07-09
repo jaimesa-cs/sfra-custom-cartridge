@@ -1,0 +1,18 @@
+<!-- Content Asset :: ${cmsData.title}</h1> -->
+<div ${cmsUtils.cslp(cmsData, 'body')}>
+    <isloop items="${cmsData.body}" var="element" status="elementStatus">
+        <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
+        <isset name="block" value ="${element[blockId]}" scope="page" />
+        <div ${cmsUtils.cslp(cmsData, 'body', elementStatus.index)} >
+            <isif condition = "${blockId === 'banner'}">
+                <isinclude template="content/components/banner" />
+            </isif>
+            <isif condition = "${blockId === 'general_content'}">
+                <isinclude template="content/components/general-content" />
+            </isif>
+        </div>
+    </isloop>
+</div>
+
+
+
