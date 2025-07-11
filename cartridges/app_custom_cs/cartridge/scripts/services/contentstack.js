@@ -152,7 +152,7 @@ var getContentService = function (requestData) {
           host +
           "/" +
           requestData.apiSlug +
-          "/entries?environment=" +
+          "?environment=" +
           requestData.environment +
           "&locale=" +
           requestData.locale +
@@ -190,6 +190,8 @@ var getContentService = function (requestData) {
  * @returns {Object} The constructed request data object.
  */
 var getRequestData = function (apiData, type, req, request) {
+  var Site = require("dw/system/Site");
+  var sitePrefix = "/s/" + Site.current.ID;
   var result = {
     //TODO: Personalize Workaround
     pageUrl:
@@ -205,13 +207,13 @@ var getRequestData = function (apiData, type, req, request) {
   switch (type) {
     case "url":
       // Content Type Based Queries
-      var slugUrl = req.httpHeaders.get("x-is-path_info"); // Get the URL from the request headers
+      var slugUrl = req.httpHeaders.get("x-is-path_info").replace(sitePrefix, ''); // Get the URL from the request headers
       result = Object.assign(result, {
         queryType: "content_type",
         query: '{"url":"' + slugUrl + '"}',
         content_type_uid: apiData.content_type_uid, // Content type UID for product pages
         apiSlug:
-          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid,
+          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid +"/entries",
       });
       break;
 
