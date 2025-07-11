@@ -22,7 +22,7 @@ This extension:
 
   - Monitors changes to the `product` field.
   - Parses the product's `slugUrl` to extract a relative SFRA-friendly URL.
-  - Defaults to `/s/neemo/product-id.html` if no valid product is found.
+  - Defaults to `product-id.html` if no valid product is found.
 
 - **Dual Field Update**
 

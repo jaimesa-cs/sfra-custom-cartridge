@@ -20,11 +20,25 @@ const rteToHtml = (doc) => {
   return fakeEntry.field;
 };
 
+const isLivePreviewEnabled = () =>{
+  var System = require("dw/system/System");
+  const instanceTypeEnum = System.getInstanceType();  
+
+  switch (instanceTypeEnum) {
+    case System.DEVELOPMENT_SYSTEM:      
+    case System.STAGING_SYSTEM:
+      return true;      
+    default:
+      return false;
+  }
+}
+
 module.exports = Object.assign(
   {
     rteToHtml: rteToHtml,
     api_key: sitePrefs.getCustomPreferenceValue("cmsApiKey"),
     environment: sitePrefs.getCustomPreferenceValue("cmsEnvironment"),
+    isLivePreviewEnabled: isLivePreviewEnabled
   },
   lpUtils
 );

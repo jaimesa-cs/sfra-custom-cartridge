@@ -17,7 +17,7 @@ The `app_custom_nemo` cartridge demonstrates how to integrate Contentstack CMS c
 cartridges/
 └── app_custom_nemo/
     ├── cartridge/
-    │   ├── app_custom_neemo.properties
+    │   ├── app_custom_cs.properties
     │   ├── controllers/
     │   ├── scripts/
     │   │   ├── helpers/
@@ -77,7 +77,7 @@ The `app_custom_nemo` cartridge overrides and extends templates to integrate CMS
 
 | Template | Purpose |
 |:---------|:--------|
-| `neemo/hello.isml` | Sample template displaying a simple CMS-connected message. |
+| `csm/hello.isml` | Sample template displaying a simple CMS-connected message. |
 | `product/productDetails.isml` | Customized product detail page to include dynamic CMS-driven content. |
 | `product/components/details.isml` | Partial component handling product details display logic. |
 | `product/components/description.isml` | Partial component for dynamic product descriptions. |

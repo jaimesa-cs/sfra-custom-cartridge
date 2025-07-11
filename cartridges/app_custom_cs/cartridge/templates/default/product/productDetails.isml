@@ -14,7 +14,7 @@
     <iscomment> Iterate over cmsData.elements keys </iscomment>
     <isset name="productDetails" value="${pdict.cmsProductDetails}" scope="page" />
     
-    <div ${cmsUtils.cslp(cmsData, 'elements')}>
+    <div ${cmsUtils.cslp(cmsData, 'elements')} class="${Object.keys(cmsData.elements).length > 0 ? '' : 'visual-builder__empty-block-parent'}">
         <isloop items="${cmsData.elements}" var="element" status="elementStatus">
             <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
             <isset name="block" value ="${element[blockId]}" scope="page" />  

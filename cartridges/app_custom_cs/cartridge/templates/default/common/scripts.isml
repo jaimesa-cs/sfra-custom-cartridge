@@ -9,7 +9,7 @@
     </isif>
 </isloop>
 
-<isif condition="${pdict.cmsHelper.api_key && pdict.cmsHelper.api_key !== ''}">
+<isif condition="${pdict.isLivePreview}">
     <script type='module'>
         //TODO: Update this values from preferences
         import ContentstackLivePreview from 'https://esm.sh/@contentstack/live-preview-utils@3.2.0';    

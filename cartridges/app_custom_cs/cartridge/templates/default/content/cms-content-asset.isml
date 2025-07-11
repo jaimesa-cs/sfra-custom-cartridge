@@ -1,5 +1,5 @@
-<!-- Content Asset :: ${cmsData.title}</h1> -->
-<div ${cmsUtils.cslp(cmsData, 'body')}>
+<!-- Content Asset :: ${cmsData.title}</h1> --> 
+<div ${cmsUtils.cslp(cmsData, 'body')} class="${Object.keys(cmsData.body).length > 0 ? '' : 'visual-builder__empty-block-parent'}">
     <isloop items="${cmsData.body}" var="element" status="elementStatus">
         <isset name="blockId" value ="${Object.keys(element)[0]}" scope="page" />
         <isset name="block" value ="${element[blockId]}" scope="page" />

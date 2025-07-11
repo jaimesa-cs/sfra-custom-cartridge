@@ -1,20 +1,5 @@
 'use strict';
-const Logger = require("dw/system/Logger");
-Logger.getLogger("neemo", "neemo").warn("Hello from controller: Page!");
-/**
- * Product Controller
- *
- * This controller extends the default Product controller in SFRA to include
- * additional functionality for integrating with Contentstack's API. It enriches
- * the product details page with CMS data and provides a debug endpoint for
- * retrieving product-related JSON data.
- *
- * Features:
- * - Enriches product view data with Contentstack CMS data.
- * - Handles personalization using Contentstack's personalization manifest.
- * - Adds support for live preview functionality.
- * - Provides a debug endpoint to return product data in JSON format.
- */
+
 
 // Import required modules
 var server = require('server');
@@ -22,6 +7,7 @@ server.extend(module.superModule);
 
 var lpUtils = require('*/cartridge/scripts/lib/contentstack-utils'); // Utility functions for Contentstack live preview
 var Contentstack = require('*/cartridge/scripts/services/contentstack'); // Service for interacting with Contentstack API
+var CmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
 
 var allowedOrigins = [
   'http://localhost:3005',
@@ -60,9 +46,10 @@ server.append('Show', function (req, res, next) {
     }
     var viewData = res.getViewData();
     viewData.cmsData = entry;
-    viewData.cmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');
+    viewData.cmsHelper = CmsHelper;
     viewData.cmsUtils = require('*/cartridge/scripts/lib/custom-utils');
-  }
+  }  
+  viewData.isLivePreview = CmsHelper.isLivePreviewEnabled();
   res.setViewData(viewData);
 
   // switch (cid) {

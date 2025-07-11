@@ -20,8 +20,8 @@ var server = require("server");
 server.extend(module.superModule);
 
 var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils"); // Utility functions for Contentstack live preview
-var customUtils = require("*/cartridge/scripts/lib/custom-utils"); // Custom utility functions
-var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Service for interacting with Contentstack API
+var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Service for interacting with Contentstack
+var CmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
 
 var allowedOrigins = [
   "http://localhost:3005",
@@ -104,12 +104,12 @@ function enrichViewDataFromCms(req, res) {
 
     // Add CMS data and helpers to the view data
     viewData.cmsData = productData;
-    viewData.cmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
+    viewData.cmsHelper = CmsHelper;
     viewData.cmsUtils = require("*/cartridge/scripts/lib/custom-utils");
   }
 
   // Indicate if live preview is enabled
-  viewData.isLivePreview = requestData.live_preview !== undefined;
+  viewData.isLivePreview = CmsHelper.isLivePreviewEnabled();
   res.setViewData(viewData);
 }
 
