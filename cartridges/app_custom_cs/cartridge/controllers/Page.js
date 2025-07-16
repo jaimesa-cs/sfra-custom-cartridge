@@ -38,7 +38,7 @@ server.append('Show', function (req, res, next) {
   if (data && data.entries && data.entries.length > 0) {
     var entry = data.entries[0];
     // Add editable tags for live preview
-    if (requestData.live_preview) {
+    if (CmsHelper.isLivePreviewEnabled()) {
       lpUtils.addEditableTags(
         entry,
         requestData.content_type_uid,

@@ -15,16 +15,19 @@ server.append("Show", function (req, res, next) {
     var viewData = res.getViewData();
   
     var requestData = Contentstack.getRequestData(
-    {
-      content_type_uid: "home",
-      query: '{"url":"/"}',
-      apiSlug: "v3/content_types/home/entries",
-      includes: ["global_configuration.promotion_bar"]
-    },
+      {
+        content_type_uid: "home",
+        query: '{"url":"/"}',
+        apiSlug: "v3/content_types/home/entries",
+        includes: [
+          "global_configuration.promotion_bar",
+          "components.elements.banner.existing_banner",
+        ],
+      },
 
-    "default",
-    req,
-    request
+      "default",
+      req,
+      request
     );
     // Fetch CMS data from Contentstack
     var data = Contentstack.getCmsData(requestData);
@@ -33,7 +36,7 @@ server.append("Show", function (req, res, next) {
         var entry = data.entries[0];
 
         // Add editable tags for live preview
-        if (requestData.live_preview) {
+        if (CmsHelper.isLivePreviewEnabled()) {
             lpUtils.addEditableTags(
                 entry,
                 requestData.content_type_uid,

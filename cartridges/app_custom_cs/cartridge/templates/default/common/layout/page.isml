@@ -17,6 +17,9 @@
   </isif>
   <isactivedatahead/>
   <isinclude template="/components/schema" />
+  <isif condition="${pdict.isLivePreview}">
+    <link rel="stylesheet" href="https://unpkg.com/@contentstack/live-preview-utils/dist/main.css">
+  </isif>
 </head>
 
 <body>

@@ -1,5 +1,0 @@
-<div class="hero slant-down search-banner" style="background-image: url(${block.image.url});" ${cmsUtils.cslp(block, 'image')}  >
-    <h1 class="header page-title" ${cmsUtils.cslp(block, 'heading')}>
-    ${block.heading}
-    </h1>
-</div>

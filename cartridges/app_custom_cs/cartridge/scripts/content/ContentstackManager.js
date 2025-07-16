@@ -1,16 +1,16 @@
 'use strict';
-const ENRICHERS = {
-    'default': require("*/cartridge/scripts/content/enrichers/defaultEnricher"),
-    'home': require("*/cartridge/scripts/content/enrichers/home")
-}
+const PROCESSORS = {
+  default: require("*/cartridge/scripts/content/processors/default"),
+  home: require("*/cartridge/scripts/content/processors/home"),
+};
 
-function enrichPayload(payload, contentType) {
-    var result = ENRICHERS.default.enrich(payload);
+function processPayload(payload, contentType) {
+    var result = PROCESSORS.default.process(payload);
     
     if(contentType){
-        var enricher = ENRICHERS[contentType];
-        if (enricher) {
-            result = enricher.enrich(payload);
+        var processor = PROCESSORS[contentType];
+        if (processor) {
+            result = processor.process(payload);
         }
     }
 
@@ -18,5 +18,5 @@ function enrichPayload(payload, contentType) {
 }
 
 module.exports = {
-    enrichPayload: enrichPayload,
+    processPayload: processPayload,
 };

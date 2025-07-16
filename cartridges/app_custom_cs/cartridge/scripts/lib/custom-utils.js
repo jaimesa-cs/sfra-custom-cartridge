@@ -12,16 +12,21 @@ const isJsonRteEmpty = function (rte) {
 };
 
 const cslp = function (obj, field, index) {
+  var res = "";
+  if(!obj || !field) {
+    return res;
+  }
   const data = Array.isArray(obj) ? obj[index || 0] : obj;
 
   // if (!isLivePreviewEnabled) return {};
   // if (!areEditTagsEnabled) return {};
-  if (!data.$) return "";
+  if (!data.$) return res;
   if (index !== undefined) {
     field = field + "__" + index;
   }
-  if (!data.$[field]) return "";
-  return data.$[field];
+  if (!data.$[field]) return res;
+  res = data.$[field];
+  return res;
 };
 
 module.exports = { isJsonRteEmpty: isJsonRteEmpty, cslp: cslp };

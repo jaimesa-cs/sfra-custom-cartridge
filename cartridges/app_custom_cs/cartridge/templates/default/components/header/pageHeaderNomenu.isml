@@ -4,9 +4,7 @@
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div></div>
-                <div class="content">
-                    <isslot id="header-banner-m" description="Slot above the site header" context="global" />
-                </div>
+                <isinclude template="components/header/promoBar" />
                 <div class="close-button">
                     <button type="button" class="close" aria-label="${Resource.msg('label.header.banner.close', 'common', null)}">
                         <span aria-hidden="true">&times;</span>

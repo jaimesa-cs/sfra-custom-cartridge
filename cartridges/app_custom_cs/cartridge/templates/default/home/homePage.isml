@@ -1,4 +1,4 @@
-<isdecorate template="common/layout/page">
+<isdecorate template="common/layout/page">    
     <isset name="cmsData" value="${pdict.cmsData}" scope="page" />
     <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
     <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
@@ -7,45 +7,32 @@
         assets.addJs('/js/productTile.js');
         assets.addCss('/css/homePage.css');
     </isscript>
-
-    <!-- +1.888.555.0199 --><!--This phone is a requirement to support existing Gomez monitor of SiteGenesis. Demandware customers can remove this.-->
-    
-        <div class="home-main homepage">        
-            <isslot id="home-main-m" description="Main home page slot." context="global" />
-        </div>
-    
-    
-
-    <div class="container home-categories homepage">
-        <div class="row home-main-categories no-gutters">
-            <isslot id="home-categories-m" description="Categories slots on the home page." context="global" />
-        </div>
-    </div>
-
-    <div class="container home-product-tiles homepage">
-        <div class="hp-product-grid" itemtype="http://schema.org/SomeProducts" itemid="#product">
-            <isslot id="home-products-m" description="Product tiles on the home page." context="global" />
-        </div>
-    </div>
-
-    <div class="homepage shop-the-style">
-        <isslot id="home-product-set-m" description="Link to a Product Set." context="global" />
-    </div>
-    <div class="home-email-signup">
-        <div class="container">
-            <form role="form">
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="hpEmailSignUp" placeholder="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}" aria-label="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}">
-                            <span class="input-group-append">
-                                <button type="submit" class="btn btn-primary subscribe-email" data-href="${URLUtils.url('EmailSubscribe-Subscribe')}">${Resource.msg('button.form.emailsignup', 'homePage', null)} </button>
-                            </span>
-                        </div>
+    <isif condition = "${!cmsData || !cmsData.components || !cmsData.components.elements}">
+        <isinclude template="content/home/fallbackHomePage" />
+    </isif>
+    <isif condition="${cmsData && cmsData.components && cmsData.components.elements}">
+        <div ${cmsUtils.cslp(cmsData, 'components')} className="${pdict.isLivePreview && cmsData.components.elements.length > 0  ? '' : 'visual-builder__empty-block-parent'}"">
+            <div ${cmsUtils.cslp(cmsData.components, 'elements')}>
+                <isloop items="${cmsData.components.elements}" var="element" status="elementStatus">
+                    <div ${cmsUtils.cslp(cmsData.components, 'elements', elementStatus.index)}>
+                        <isset name="blockId" value="${Object.keys(element)[0]}" scope="page" />
+                        <!-- Modular Block :: ${blockId} -->
+                        <isset name="block" value="${element[blockId]}" scope="page" />                        
+                        <isif condition="${blockId == 'banner'}">                            
+                            <isinclude template="content/components/banner/banner" />                            
+                            <iselseif condition="${blockId == 'home_categories'}">
+                                <isinclude template="content/components/homeCategories" />
+                            <iselseif condition="${blockId == 'product_tiles'}">
+                                <isinclude template="content/components/productTiles" />
+                            <iselseif condition="${blockId == 'email_signup'}">
+                                <isinclude template="content/components/emailSignup" />
+                            <iselse>
+                                <!-- Unknown component -->
+                            </iselse>
+                        </isif>
                     </div>
-                    <div class="col-sm-7 email-description">${Resource.msg('description.form.emailsignup', 'homePage', null)}</div>
-                </div>
-            </form>
+                </isloop>
+            </div>
         </div>
-    </div>
+    </isif>
 </isdecorate>

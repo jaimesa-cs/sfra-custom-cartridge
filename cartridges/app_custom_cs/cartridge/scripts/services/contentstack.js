@@ -319,7 +319,7 @@ module.exports = {
       for (var i = 0; i < payload.entries.length; i++) {
         var entry = payload.entries[i];
         // Enrich each entry in the payload
-        entry = ContentstackManager.enrichPayload(entry, requestData.content_type_uid);
+        entry = ContentstackManager.processPayload(entry, requestData.content_type_uid);
         payload.entries[i] = entry;
       }
     }

@@ -21,16 +21,18 @@ const rteToHtml = (doc) => {
 };
 
 const isLivePreviewEnabled = () =>{
-  var System = require("dw/system/System");
-  const instanceTypeEnum = System.getInstanceType();  
+  //TODO: uncomment this when live preview is implemented
+  // var System = require("dw/system/System");
+  // const instanceTypeEnum = System.getInstanceType();  
 
-  switch (instanceTypeEnum) {
-    case System.DEVELOPMENT_SYSTEM:      
-    case System.STAGING_SYSTEM:
-      return true;      
-    default:
-      return false;
-  }
+  // switch (instanceTypeEnum) {
+  //   case System.DEVELOPMENT_SYSTEM:      
+  //   case System.STAGING_SYSTEM:
+  //     return true;      
+  //   default:
+  //     return false;
+  // }
+  return true; // For now, always return true for live preview
 }
 
 module.exports = Object.assign(

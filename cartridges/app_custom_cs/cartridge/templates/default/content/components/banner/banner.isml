@@ -1,0 +1,24 @@
+<isset name="banner" value="${block}" scope="page" />
+
+
+<isif condition="${block.existing_banner && block.existing_banner.length > 0}">    
+    <isloop items="${block.existing_banner}" var="value">
+        <isset name="firstBanner" value="${value.content}" scope="page" />        
+        <isbreak/>
+    </isloop>
+    <isset name="banner" value="${firstBanner}" scope="page" />    
+    <div ${cmsUtils.cslp(block, 'existing_banner')}>                
+        <div ${cmsUtils.cslp(block, 'existing_banner', 0)}>                
+            <div ${cmsUtils.cslp(block.existing_banner[0], 'content')}>                
+                <isinclude template="content/components/banner/innerBanner" />                  
+            </div>
+        </div>
+    </div>
+    <iselse>
+        <isset name="banner" value="${block.banner}" scope="page" />
+        <div ${cmsUtils.cslp(block, 'banner')}>                
+            <isinclude template="content/components/banner/innerBanner" />        
+        </div>  
+    </iselse>
+</isif>
+
