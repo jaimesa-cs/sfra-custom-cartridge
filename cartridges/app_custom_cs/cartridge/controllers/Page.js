@@ -23,10 +23,12 @@ server.append('Show', function (req, res, next) {
   // Construct request data for Contentstack
   var requestData = Contentstack.getRequestData(
     {
-      content_type_uid: 'content_asset',
+      content_type_uid: "content_asset",
       query: '{"cid":"' + cid + '"}',
+      apiSlug: "v3/content_types/content_asset/entries",
     },
-    'default',
+
+    "default",
     req,
     request
   );
@@ -76,6 +78,7 @@ server.get('HTML', function (req, res, next) {
     {
       content_type_uid: 'content_asset',
       query: '{"cid":"' + cid + '"}',
+      apiSlug: 'v3/content_types/content_asset/entries',
     },
     'default',
     req,

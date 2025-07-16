@@ -4,7 +4,7 @@
 var LocalServiceRegistry = require("dw/svc/LocalServiceRegistry");
 var Site = require("dw/system/Site");
 var Locale = require("dw/util/Locale");
-
+var ContentstackManager = require("*/cartridge/scripts/content/ContentstackManager");
 /**
  * Appends base request data required for Contentstack API calls.
  * This includes API keys, environment, locale, and other configuration values.
@@ -148,6 +148,11 @@ var getContentService = function (requestData) {
         var host = getHost(requestData);
         prepareHeaders(svc, requestData);
         // Construct the URL for the content request
+        //&include[]=categories&include[]=tags
+        var includes = requestData.includes
+          ? requestData.includes.map((include) => "include[]=" + include).join("&")
+          : "";
+        includes = includes ? "&" + includes : "";
         var url =
           host +
           "/" +
@@ -158,6 +163,7 @@ var getContentService = function (requestData) {
           requestData.locale +
           "&query=" +
           requestData.encodedQuery +
+          includes +
           "&include_dimension=true&include_applied_variants=true";
         svc.setURL(url);
         return null;
@@ -192,8 +198,8 @@ var getContentService = function (requestData) {
 var getRequestData = function (apiData, type, req, request) {
   var Site = require("dw/system/Site");
   var sitePrefix = "/s/" + Site.current.ID;
-  var result = {
-    //TODO: Personalize Workaround
+  var result = Object.assign({}, apiData);
+  result = Object.assign(result, {
     pageUrl:
       "https://" +
       req.httpHeaders.get("x-is-host") +
@@ -202,7 +208,7 @@ var getRequestData = function (apiData, type, req, request) {
       req.httpHeaders.get("x-is-query_string"), // Get the URL from the request headers
     queryType: type,
     method: "GET",
-  };
+  });
 
   switch (type) {
     case "url":
@@ -308,6 +314,15 @@ module.exports = {
     var contentstackService = getContentService(cmsRequestData);
     var result = contentstackService.call(cmsRequestData);
     var payload = result.ok ? result.object : null;
+    //Enrich the payload
+    if (payload && payload.entries && payload.entries.length > 0) {
+      for (var i = 0; i < payload.entries.length; i++) {
+        var entry = payload.entries[i];
+        // Enrich each entry in the payload
+        entry = ContentstackManager.enrichPayload(entry, requestData.content_type_uid);
+        payload.entries[i] = entry;
+      }
+    }
     return payload;
   },
 
