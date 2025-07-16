@@ -12,8 +12,7 @@ var CmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
 
 // Add or override logic in Home-Show
 server.append("Show", function (req, res, next) {
-    var viewData = res.getViewData();
-  
+    var viewData = res.getViewData();    
     var requestData = Contentstack.getRequestData(
       {
         content_type_uid: "home",
@@ -43,8 +42,7 @@ server.append("Show", function (req, res, next) {
                 false,
                 requestData.locale
             );
-        }
-        var viewData = res.getViewData();
+        }        
         viewData.cmsData = entry;
         viewData.cmsHelper = CmsHelper;
         viewData.cmsUtils = require('*/cartridge/scripts/lib/custom-utils');

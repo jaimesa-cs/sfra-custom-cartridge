@@ -1,16 +1,16 @@
-<isdecorate template="common/layout/page">    
-    <isset name="cmsData" value="${pdict.cmsData}" scope="page" />
-    <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
-    <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
+<isdecorate template="common/layout/page">        
     <isscript>
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/productTile.js');
         assets.addCss('/css/homePage.css');
-    </isscript>
-    <isif condition = "${!cmsData || !cmsData.components || !cmsData.components.elements}">
-        <isinclude template="content/home/fallbackHomePage" />
+    </isscript>    
+    <isif condition="${pdict && pdict.cmsData == null}">    
+        <isinclude template="home/fallbackHomePage" />
     </isif>
-    <isif condition="${cmsData && cmsData.components && cmsData.components.elements}">
+    <isif condition="${pdict && pdict.cmsData != null}">
+        <isset name="cmsData" value="${pdict.cmsData}" scope="page" />
+        <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
+        <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
         <div ${cmsUtils.cslp(cmsData, 'components')} className="${pdict.isLivePreview && cmsData.components.elements.length > 0  ? '' : 'visual-builder__empty-block-parent'}"">
             <div ${cmsUtils.cslp(cmsData.components, 'elements')}>
                 <isloop items="${cmsData.components.elements}" var="element" status="elementStatus">
