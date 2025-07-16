@@ -1,0 +1,47 @@
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+  }
+
+  .tile {
+    grid-column: span var(--colspan, 1);
+    grid-row: span var(--rowspan, 1);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+</style>
+ 
+<div class="grid container home-categories homepage">
+    <isloop items="${block.tiles}" var="tile" status="tileStatus">
+        <isset name="colSpan" value="${tile.layout.split('x')[0]}" scope="page" />
+        <isset name="rowSpan" value="${tile.layout.split('x')[1]}" scope="page" />
+        <isset name="data" value="${tile.category.data[0]}" scope="page" />
+        <isset name="image" value="${data.c_slotBannerImage ? data.c_slotBannerImage : data.image}" scope="page" />
+        <isset name="title" value="${data.name}" scope="page" />
+        <isset name="ctaUrl" value="${'/s/SFRADemo/' + data.id.replace(/-/g, '/')}" scope="page" />
+        
+        <isif condition="${tile.overwrite}">
+            <isif condition="${tile.overwrite.image}">
+                <isset name="image" value="${tile.overwrite.image.url}" scope="page" />
+            </isif>
+            <isif condition="${(tile.overwrite.title && tile.overwrite.title != '') == true}">
+                <isset name="title" value="${tile.overwrite.title}" scope="page" />
+            </isif>
+            <isif condition="${(tile.overwrite.cta && tile.overwrite.cta.link && tile.overwrite.cta.link.href)!=''}">
+                <isset name="ctaUrl" value="${tile.overwrite.cta.link.href}" scope="page" />
+            </isif>            
+        </isif>                
+        <div class="tile" style="--colspan:${colSpan}; --rowspan:${rowSpan}; background-image: url(${image});">
+            <a class="category-tile" href="${ctaUrl}">
+                <h2 style="color: white;" class="hp-category-message">${title}</h2>
+            </a>
+        </div>
+    </isloop>
+</div>
+

@@ -1,5 +1,5 @@
 <div class="content">                     
-    <isif condition = "${!cmsData || !cmsData.global_configuration}">
+    <isif condition = "${pdict.cmsData == null}">
         <isslot id="header-banner-m" description="Slot above the site header" context="global" />
     </isif>
     <isif condition = "${cmsData && cmsData.global_configuration}">

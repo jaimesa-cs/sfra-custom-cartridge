@@ -20,10 +20,12 @@
                         <isset name="block" value="${element[blockId]}" scope="page" />                        
                         <isif condition="${blockId == 'banner'}">                            
                             <isinclude template="content/components/banner/banner" />                            
+                            <iselseif condition="${blockId == 'content_slot'}">
+                                <isinclude template="content/components/contentSlot" />
+                            <iselseif condition="${blockId == 'category_tiles'}">
+                                <isinclude template="content/components/categoryTiles" />
                             <iselseif condition="${blockId == 'home_categories'}">
-                                <isinclude template="content/components/homeCategories" />
-                            <iselseif condition="${blockId == 'product_tiles'}">
-                                <isinclude template="content/components/productTiles" />
+                                <isinclude template="content/components/homeCategories" />                            
                             <iselseif condition="${blockId == 'email_signup'}">
                                 <isinclude template="content/components/emailSignup" />
                             <iselse>

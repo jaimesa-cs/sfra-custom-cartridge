@@ -164,7 +164,7 @@ var getContentService = function (requestData) {
           "&query=" +
           requestData.encodedQuery +
           includes +
-          "&include_dimension=true&include_applied_variants=true";
+          "&include_dimension=true&include_applied_variants=true&include_metadata=true";
         svc.setURL(url);
         return null;
       },

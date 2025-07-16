@@ -1,5 +1,31 @@
-<div class="hero slant-down search-banner" style="background-image: url(${banner.image.url});" ${cmsUtils.cslp(banner, 'image')}  >
-    <h1 class="header page-title" ${cmsUtils.cslp(banner, 'heading')}>
-    ${banner.heading}
-    </h1>
+<style>
+    @media (max-width: 543px) {
+        .banner_${banner.image.uid} .hero {
+            background-image: url(${banner.image.url});
+        }
+    }
+    @media (max-width: 768px) and (min-width: 544px) {
+        .banner_${banner.image.uid} .hero {
+            background-image: url(${banner.image.url});
+        }
+    }
+    @media (min-width: 992px) {
+        .banner_${banner.image.uid} .hero {
+            background-image: url(${banner.image.url});
+        }
+    }
+</style>
+<isset name="ctaUrl" value="" scope="page" />
+<isif condition="${banner.cta && banner.cta.link && banner.cta.link.href}">
+    <isset name="ctaUrl" value="${banner.cta.link.href}" scope="page" />
+</isif>
+
+<div class="homepage banner_${banner.image.uid}" ${cmsUtils.cslp(banner, 'image')}>
+    <a href="${ctaUrl}" title="${banner.cta.link.title}">
+        <div class="hero ${banner.slant}">
+            <h1 class="page-title" ${cmsUtils.cslp(banner, 'heading')}>
+            ${banner.heading}
+            </h1>
+        </div>
+    </a>
 </div>
