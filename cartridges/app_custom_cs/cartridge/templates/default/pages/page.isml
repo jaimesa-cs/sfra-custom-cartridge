@@ -3,10 +3,7 @@
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/productTile.js');
         assets.addCss('/css/homePage.css');
-    </isscript>    
-    <isif condition="${pdict && pdict.cmsData == null}">    
-        <isinclude template="home/fallbackHomePage" />
-    </isif>
+    </isscript>        
     <isif condition="${pdict && pdict.cmsData != null}">
         <isinclude template="pages/global-modular-blocks.isml" />
     </isif>

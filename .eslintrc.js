@@ -5,7 +5,7 @@ module.exports = {
     commonjs: true,
   },
   parserOptions: {
-    ecmaVersion: 5,
+    ecmaVersion: latest,
   },
   rules: {
     'no-template-curly-in-string': 'error',
@@ -15,5 +15,6 @@ module.exports = {
     'prefer-template': 'off',
     'template-curly-spacing': 'off',
     'no-trailing-spaces': 'off',
+    'const-assign': 'off',
   },
 };

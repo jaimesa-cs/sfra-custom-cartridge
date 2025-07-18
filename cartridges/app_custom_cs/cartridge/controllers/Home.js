@@ -1,9 +1,9 @@
 'use strict';
 
 const server = require('server');
+const base = module.superModule;
 
-// Inherit from the base Home controller
-server.extend(module.superModule);
+server.extend(base);
 
 var Contentstack = require('*/cartridge/scripts/services/contentstack'); // Service for interacting with Contentstack API
 var CmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');

@@ -15,21 +15,44 @@ var allowedOrigins = [
 // Append custom logic to the "Show" route
 server.append('Show', function (req, res, next) {
   var viewData = res.getViewData();
-  // Optional: log content ID being viewed
-  var cid = req.querystring.cid || '';
+  var data = null;
 
-  // Construct request data for Contentstack
+  var pageType = 'unknown';
 
   // Fetch CMS data from Contentstack
-  var data = Contentstack.getCmsData({
-    content_type_uid: 'content_asset',
-    query: '{"cid":"' + cid + '"}',
-    apiSlug: 'v3/content_types/content_asset/entries',
-    queryType: 'default',
-    req: req,
-    request: request,
-  });
+  if (req.querystring.cid) {
+    data = Contentstack.getCmsData({
+      content_type_uid: 'content_asset',
+      query: '{"cid":"' + req.querystring.cid + '"}',
+      apiSlug: 'v3/content_types/content_asset/entries',
+      queryType: 'default',
+      req: req,
+      request: request,
+    });
+    pageType = 'content_asset';
+  } else if (
+    req.querystring.u && //url slug
+    req.querystring.c && //content type
+    req.querystring.p //prefix
+  ) {
+    const url =
+      req.querystring.p + '/' + req.querystring.u.toString().split('?')[0];
+    const ct = req.querystring.c;
 
+    data = Contentstack.getCmsData({
+      content_type_uid: ct,
+      query: '{"url":"' + url + '"}',
+      apiSlug: 'v3/content_types/' + ct + '/entries',
+      includes: [
+        'global_configuration.promotion_bar',
+        'components.elements.banner.existing_banner',
+      ],
+      queryType: 'default',
+      req: req,
+      request: request,
+    });
+    pageType = ct;
+  }
   if (data && data.entries && data.entries.length > 0) {
     var entry = data.entries[0];
     // Add editable tags for live preview
@@ -40,12 +63,13 @@ server.append('Show', function (req, res, next) {
   }
   viewData.isLivePreview = CmsHelper.isLivePreviewEnabled();
   res.setViewData(viewData);
-
-  // switch (cid) {
-  //   case "about-us":
-  //     return res.render("content/contentAsset");
-  // }
-
+  switch (pageType) {
+    case 'page':
+      res.render('pages/page');
+      break;
+    default:
+      break;
+  }
   return next();
 });
 

@@ -1,0 +1,31 @@
+<isif condition="${pdict && pdict.cmsData != null}">
+    <isset name="cmsData" value="${pdict.cmsData}" scope="page" />
+    <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
+    <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
+    <div ${cmsUtils.cslp(cmsData, 'components')} className="${pdict.isLivePreview && cmsData.components.elements.length > 0  ? '' : 'visual-builder__empty-block-parent'}"">
+        <div ${cmsUtils.cslp(cmsData.components, 'elements')}>
+            <isloop items="${cmsData.components.elements}" var="element" status="elementStatus">
+                <div ${cmsUtils.cslp(cmsData.components, 'elements', elementStatus.index)}>
+                    <isset name="blockId" value="${Object.keys(element)[0]}" scope="page" />
+                    <!-- Modular Block :: ${blockId} -->
+                    <isset name="block" value="${element[blockId]}" scope="page" />                        
+                    <isif condition="${blockId == 'banner'}">                            
+                        <isinclude template="content/components/banner/banner" />                            
+                        <iselseif condition="${blockId == 'content_slot'}">
+                            <isinclude template="content/components/contentSlot" />
+                        <iselseif condition="${blockId == 'category_tiles'}">
+                            <isinclude template="content/components/categoryTiles" />
+                        <iselseif condition="${blockId == 'home_categories'}">
+                            <isinclude template="content/components/homeCategories" />                            
+                        <iselseif condition="${blockId == 'email_signup'}">
+                            <isinclude template="content/components/emailSignup" />
+                        <iselse>
+                            <!-- Unknown component -->
+                        </iselse>
+                    </isif>
+                </div>
+            </isloop>
+        </div>
+    </div>
+</isif>
+
