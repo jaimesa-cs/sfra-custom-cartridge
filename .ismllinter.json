@@ -1,0 +1,13 @@
+{
+  "extends": "isml-linter:recommended",
+  "rules": {
+    "no-inline-style": "off", // Allow inline styles for SFRA flexibility
+    "attribute-quote-style": ["error", "double"], // Enforce double quotes
+    "attribute-name-style": ["warn", "lowercase"], // Warn if attributes aren't lowercase
+    "indent": ["error", 4], // Enforce 4 spaces indentation
+    "max-len": ["warn", 120], // Warn if a line exceeds 120 chars
+    "no-multiple-empty-lines": ["error", { "max": 1 }], // Disallow multiple blank lines
+    "require-space-after-if": "error", // Ensure space after isif/iselseif tags
+    "enforce-self-closing": "off" // Disable self-closing enforcement for <isinclude>, etc.
+  }
+}

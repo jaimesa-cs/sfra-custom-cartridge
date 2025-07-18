@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * Product Controller
@@ -16,16 +16,15 @@
  */
 
 // Import required modules
-var server = require("server");
+var server = require('server');
 server.extend(module.superModule);
 
-var lpUtils = require("*/cartridge/scripts/lib/contentstack-utils"); // Utility functions for Contentstack live preview
-var Contentstack = require("*/cartridge/scripts/services/contentstack"); // Service for interacting with Contentstack
-var CmsHelper = require("*/cartridge/scripts/helpers/cmsHelper");
+var Contentstack = require('*/cartridge/scripts/services/contentstack'); // Service for interacting with Contentstack
+var CmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');
 
 var allowedOrigins = [
-  "http://localhost:3005",
-  "https://sfra-url-custom-field.contentstackapps.com",
+  'http://localhost:3005',
+  'https://sfra-url-custom-field.contentstackapps.com',
 ];
 
 /**
@@ -38,41 +37,29 @@ function enrichViewDataFromCms(req, res) {
 
   // If no product ID is provided, skip enrichment
   if (req.querystring && !req.querystring.pid) {
-    return next();
+    return;
   }
 
   // Construct request data for Contentstack
-  var requestData = Contentstack.getRequestData(
-    {
-      content_type_uid: "product_page",
-      query: '{"product.data.id":"' + req.querystring.pid + '"}',
-    },
-    "url",
-    req,
-    request
-  );
+  var contentTypeUid = 'product_page';
+
   // Fetch CMS data from Contentstack
-  var data = Contentstack.getCmsData(requestData);
+  var data = Contentstack.getCmsData({
+    content_type_uid: contentTypeUid,
+    query: '{"product.data.id":"' + req.querystring.pid + '"}',
+    queryType: 'url',
+    req: req,
+    request: request,
+  });
 
   if (data && data.entries && data.entries.length > 0) {
     var entry = data.entries[0];
-
-    // Add editable tags for live preview
-    if (CmsHelper.isLivePreviewEnabled()) {
-      lpUtils.addEditableTags(
-        entry,
-        requestData.content_type_uid,
-        false,
-        requestData.locale
-      );
-    }
-
     var productData = entry;
 
     // Handle default product details
     if (productData.elements && productData.elements.length > 0) {
       const defaultProductDetailsFound = productData.elements.filter(
-        (e) => Object.keys(e)[0] === "default_product_details"
+        (e) => Object.keys(e)[0] === 'default_product_details'
       );
       let showDefaultProductDetails = false;
       let defaultProductDetails = null;
@@ -97,7 +84,7 @@ function enrichViewDataFromCms(req, res) {
       } else {
         // Remove the block from productData
         productData.elements = productData.elements.filter(
-          (e) => Object.keys(e)[0] !== "default_product_details"
+          (e) => Object.keys(e)[0] !== 'default_product_details'
         );
       }
     }
@@ -105,7 +92,7 @@ function enrichViewDataFromCms(req, res) {
     // Add CMS data and helpers to the view data
     viewData.cmsData = productData;
     viewData.cmsHelper = CmsHelper;
-    viewData.cmsUtils = require("*/cartridge/scripts/lib/custom-utils");
+    viewData.cmsUtils = require('*/cartridge/scripts/lib/custom-utils');
   }
 
   // Indicate if live preview is enabled
@@ -114,20 +101,20 @@ function enrichViewDataFromCms(req, res) {
 }
 
 // Append custom logic to the "Show" route
-server.append("Show", function (req, res, next) {
+server.append('Show', function (req, res, next) {
   enrichViewDataFromCms(req, res);
   next();
 });
 
 // Debug route to return JSON data (for development purposes only)
-server.get("JSON", function (req, res, next) {
+server.get('JSON', function (req, res, next) {
   // res.setHttpHeader("Access-Control-Allow-Origin", "http://localhost:3005");
-  const origin = req.httpHeaders.get("origin");
+  const origin = req.httpHeaders.get('origin');
   if (origin !== null && allowedOrigins.includes(origin)) {
-    res.setHttpHeader("Access-Control-Allow-Origin", origin);
+    res.setHttpHeader('Access-Control-Allow-Origin', origin);
   }
 
-  var productHelper = require("*/cartridge/scripts/helpers/productHelpers");
+  var productHelper = require('*/cartridge/scripts/helpers/productHelpers');
   var showProductPageHelperResult = productHelper.showProductPage(
     req.querystring,
     req.pageMetaData

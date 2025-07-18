@@ -7,40 +7,79 @@
 
   .tile {
     grid-column: span var(--colspan, 1);
-    grid-row: span var(--rowspan, 1);
+    grid-row: span var(--rowspan, 1);    
+    position: relative;
     background-size: cover;
     background-position: center;
-    color: white;
-    display: flex;
     font-size: 1.2rem;
     font-weight: bold;
+    color: white;
+    display: flex
+;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
   }
+  .category-tile-custom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 35px 35px;
+    text-decoration: none;              /* Removes underline */
+    display: inline-block;
+    color: white;                       /* Ensures link is white */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6); /* Adds soft contrast shadow */
+  }
+
+  .category-tile-custom:hover {
+    text-decoration: none;              /* Prevent underline on hover */
+    color: white;                       /* Prevent hover color change */
+  }
+
+  .hp-category-message-custom {
+    margin: 0;
+    color: inherit;                     /* Inherit color from <a> */
+  }
+  .partially-opaque-background {
+    background: rgba(0, 0, 0, 0.4); 
+    padding: 20px;                    /* Optional: padding for better readability */   
+    border-radius: 4px;             /* Optional: rounded corners */
+    backdrop-filter: blur(2px); 
+  }
+  .tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.1); /* adjustable opacity */
+    z-index: 1;
+  }
+
+    /* Content goes above the overlay */
+  .category-tile-custom {
+    position: absolute;       /* Keep it pinned to bottom-left */
+    bottom: 0;
+    left: 0;
+    padding: 35px 35px;
+    text-decoration: none;
+    color: white;
+    z-index: 2;               /* Ensure it's above the overlay */
+}
+
+  .category-tile-custom * {
+    z-index: inherit;
+    color: inherit;
+    text-decoration: none;
+  } 
 </style>
  
-<div class="grid container home-categories homepage">
-    <isloop items="${block.tiles}" var="tile" status="tileStatus">
-        <isset name="colSpan" value="${tile.layout.split('x')[0]}" scope="page" />
-        <isset name="rowSpan" value="${tile.layout.split('x')[1]}" scope="page" />
-        <isset name="data" value="${tile.category.data[0]}" scope="page" />
-        <isset name="image" value="${data.c_slotBannerImage ? data.c_slotBannerImage : data.image}" scope="page" />
-        <isset name="title" value="${data.name}" scope="page" />
-        <isset name="ctaUrl" value="${'/s/SFRADemo/' + data.id.replace(/-/g, '/')}" scope="page" />
-        
-        <isif condition="${tile.overwrite}">
-            <isif condition="${tile.overwrite.image}">
-                <isset name="image" value="${tile.overwrite.image.url}" scope="page" />
-            </isif>
-            <isif condition="${(tile.overwrite.title && tile.overwrite.title != '') == true}">
-                <isset name="title" value="${tile.overwrite.title}" scope="page" />
-            </isif>
-            <isif condition="${(tile.overwrite.cta && tile.overwrite.cta.link && tile.overwrite.cta.link.href)!=''}">
-                <isset name="ctaUrl" value="${tile.overwrite.cta.link.href}" scope="page" />
-            </isif>            
-        </isif>                
-        <div class="tile" style="--colspan:${colSpan}; --rowspan:${rowSpan}; background-image: url(${image});">
-            <a class="category-tile" href="${ctaUrl}">
-                <h2 style="color: white;" class="hp-category-message">${title}</h2>
-            </a>
+<div class="grid container home-categories homepage" ${cmsUtils.cslp(block, 'tiles')}>
+    <isloop items="${block.tiles}" var="tile" status="tileStatus">        
+        <div class="tile" style="--colspan:${tile.colSpan}; --rowspan:${tile.rowSpan}; background-image: url(${tile.image});" ${cmsUtils.cslp(block, 'tiles', tileStatus.index)}>
+            <div ${cmsUtils.cslp(tile, 'image')}>
+                <a class="category-tile-custom" href="${tile.ctaUrl}" ${cmsUtils.cslp(tile, 'ctaUrl')}>
+                    <h2 style="color: white;" class="hp-category-message-custom ${tile.highlightTitle ? 'partially-opaque-background' : ''}" ${cmsUtils.cslp(tile, 'title')}>${tile.title}</h2>
+                </a>
+            </div>
         </div>
     </isloop>
 </div>

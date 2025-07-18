@@ -1,0 +1,26 @@
+{
+  // Make sure .isml files use HTML language mode for formatting
+  "files.associations": {
+    "*.isml": "html"
+  },
+
+  // Enable format on save for ISML (via HTML formatter or Prophet)
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // Or leave blank for default HTML formatter
+  },
+  "[isml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // General editor settings for ISML
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+
+  // Optional: Control HTML formatting rules (affects ISML when treated as HTML)
+  "html.format.wrapLineLength": 120,
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapAttributes": "force-expand-multiline", // Other options: "auto", "force-aligned"
+  "html.format.unformatted": "wbr", // Keep SFCC tags intact
+  "html.format.endWithNewline": true
+}

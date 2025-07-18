@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 // Import required modules
-var LocalServiceRegistry = require("dw/svc/LocalServiceRegistry");
-var Site = require("dw/system/Site");
-var Locale = require("dw/util/Locale");
-var ContentstackManager = require("*/cartridge/scripts/content/ContentstackManager");
+var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
+var Site = require('dw/system/Site');
+var Locale = require('dw/util/Locale');
+var ContentstackManager = require('*/cartridge/scripts/content/ContentstackManager');
 /**
  * Appends base request data required for Contentstack API calls.
  * This includes API keys, environment, locale, and other configuration values.
@@ -14,29 +14,22 @@ var ContentstackManager = require("*/cartridge/scripts/content/ContentstackManag
  */
 var appendBaseRequestData = function (appendRequestData) {
   var sitePrefs = Site.getCurrent();
-  var currentLocale = Locale.getLocale(request.locale); // Get the current locale
-  var language = currentLocale.language; // e.g., "en"
-  var country = currentLocale.country;
-  var locale =
-    currentLocale && currentLocale.language && currentLocale.country
-      ? (language + "-" + country).toLowerCase()
-      : "en-us"; // Default to "en-us" if locale is not found
 
   var requestData = {
-    endpoint: sitePrefs.getCustomPreferenceValue("cmsApiEndpoint"),
+    endpoint: sitePrefs.getCustomPreferenceValue('cmsApiEndpoint'),
     preview_endpoint: sitePrefs.getCustomPreferenceValue(
-      "cmsPreviewApiEndpoint"
+      'cmsPreviewApiEndpoint'
     ),
-    access_token: sitePrefs.getCustomPreferenceValue("cmsAccessToken"),
-    api_key: sitePrefs.getCustomPreferenceValue("cmsApiKey"),
-    environment: sitePrefs.getCustomPreferenceValue("cmsEnvironment"),
-    branch: sitePrefs.getCustomPreferenceValue("cmsBranch"), // There's a typo in Business Manager, it should be "cmsBranch"
-    edge_api_endpoint: sitePrefs.getCustomPreferenceValue("cmsEdgeApiEndpoint"),
+    access_token: sitePrefs.getCustomPreferenceValue('cmsAccessToken'),
+    api_key: sitePrefs.getCustomPreferenceValue('cmsApiKey'),
+    environment: sitePrefs.getCustomPreferenceValue('cmsEnvironment'),
+    branch: sitePrefs.getCustomPreferenceValue('cmsBranch'), // There's a typo in Business Manager, it should be "cmsBranch"
+    edge_api_endpoint: sitePrefs.getCustomPreferenceValue('cmsEdgeApiEndpoint'),
     personalize_project_uid: sitePrefs.getCustomPreferenceValue(
-      "cmsPersonalizeProjectUID"
+      'cmsPersonalizeProjectUID'
     ),
-    preview_token: sitePrefs.getCustomPreferenceValue("cmsPreviewToken"),
-    locale: locale || "en-us", // Default to "en-us" if locale is not found
+    preview_token: sitePrefs.getCustomPreferenceValue('cmsPreviewToken'),
+    locale: getCmsLocale(), // Get the current locale
   };
 
   // Merge the base request data with the provided request data
@@ -46,6 +39,16 @@ var appendBaseRequestData = function (appendRequestData) {
   return appendRequestData;
 };
 
+var getCmsLocale = function () {
+  var currentLocale = Locale.getLocale(request.locale); // Get the current locale
+  var language = currentLocale.language; // e.g., "en"
+  var country = currentLocale.country;
+  var locale =
+    currentLocale && currentLocale.language && currentLocale.country
+      ? (language + '-' + country).toLowerCase()
+      : 'en-us'; // Default to "en-us" if locale is not found
+  return locale;
+};
 /**
  * Determines the appropriate host URL based on whether live preview is enabled.
  *
@@ -67,26 +70,26 @@ var getHost = function (requestData) {
  * @param {Object} requestData - The request data object.
  */
 var prepareHeaders = function (svc, requestData) {
-  svc.addHeader("Content-Type", "application/json");
-  svc.addHeader("api_key", requestData.api_key);
+  svc.addHeader('Content-Type', 'application/json');
+  svc.addHeader('api_key', requestData.api_key);
   svc.setRequestMethod(requestData.method);
 
   // Add headers for personalization or live preview if applicable
   if (requestData.variant) {
-    svc.addHeader("x-cs-variant-uid", requestData.variant);
+    svc.addHeader('x-cs-variant-uid', requestData.variant);
   }
   if (requestData && requestData.live_preview) {
-    svc.addHeader("preview_token", requestData.preview_token);
-    svc.addHeader("live_preview", requestData.live_preview);
-    svc.addHeader("content_type", requestData.content_type_uid);
+    svc.addHeader('preview_token', requestData.preview_token);
+    svc.addHeader('live_preview', requestData.live_preview);
+    svc.addHeader('content_type', requestData.content_type_uid);
     if (requestData.preview_timestamp) {
       svc.addHeader(
-        "preview_timestamp",
+        'preview_timestamp',
         decodeURIComponent(requestData.preview_timestamp)
       );
     }
   } else {
-    svc.addHeader("access_token", requestData.access_token);
+    svc.addHeader('access_token', requestData.access_token);
   }
 };
 
@@ -103,15 +106,15 @@ var getPersonalizeService = function (userId, requestData) {
   var personalizeProjectUid = requestData.personalize_project_uid;
 
   var personalizeService = LocalServiceRegistry.createService(
-    "Contentstack.Personalize.Service",
+    'Contentstack.Personalize.Service',
     {
       createRequest: function (svc, httpClient) {
-        svc.setURL(edgeApiEndpoint + "/manifest");
-        svc.addHeader("Content-Type", "application/json");
-        svc.addHeader("x-project-uid", personalizeProjectUid);
-        svc.addHeader("x-page-url", pageUrl);
-        svc.addHeader("x-cs-personalize-user-uid", userId);
-        svc.setRequestMethod("GET");
+        svc.setURL(edgeApiEndpoint + '/manifest');
+        svc.addHeader('Content-Type', 'application/json');
+        svc.addHeader('x-project-uid', personalizeProjectUid);
+        svc.addHeader('x-page-url', pageUrl);
+        svc.addHeader('x-cs-personalize-user-uid', userId);
+        svc.setRequestMethod('GET');
         return null;
       },
       parseResponse: function (svc, httpClient) {
@@ -142,7 +145,7 @@ var getPersonalizeService = function (userId, requestData) {
  */
 var getContentService = function (requestData) {
   var contentstackService = LocalServiceRegistry.createService(
-    "Contentstack.Content.Service",
+    'Contentstack.Content.Service',
     {
       createRequest: function (svc, httpClient) {
         var host = getHost(requestData);
@@ -150,21 +153,23 @@ var getContentService = function (requestData) {
         // Construct the URL for the content request
         //&include[]=categories&include[]=tags
         var includes = requestData.includes
-          ? requestData.includes.map((include) => "include[]=" + include).join("&")
-          : "";
-        includes = includes ? "&" + includes : "";
+          ? requestData.includes
+              .map((include) => 'include[]=' + include)
+              .join('&')
+          : '';
+        includes = includes ? '&' + includes : '';
         var url =
           host +
-          "/" +
+          '/' +
           requestData.apiSlug +
-          "?environment=" +
+          '?environment=' +
           requestData.environment +
-          "&locale=" +
+          '&locale=' +
           requestData.locale +
-          "&query=" +
+          '&query=' +
           requestData.encodedQuery +
           includes +
-          "&include_dimension=true&include_applied_variants=true&include_metadata=true";
+          '&include_dimension=true&include_applied_variants=true&include_metadata=true';
         svc.setURL(url);
         return null;
       },
@@ -196,52 +201,55 @@ var getContentService = function (requestData) {
  * @returns {Object} The constructed request data object.
  */
 var getRequestData = function (apiData, type, req, request) {
-  var Site = require("dw/system/Site");
-  var sitePrefix = "/s/" + Site.current.ID;
+  var Site = require('dw/system/Site');
+  var sitePrefix = '/s/' + Site.current.ID;
   var result = Object.assign({}, apiData);
   result = Object.assign(result, {
     pageUrl:
-      "https://" +
-      req.httpHeaders.get("x-is-host") +
-      req.httpHeaders.get("x-is-path_info") +
-      "?" +
-      req.httpHeaders.get("x-is-query_string"), // Get the URL from the request headers
+      'https://' +
+      req.httpHeaders.get('x-is-host') +
+      req.httpHeaders.get('x-is-path_info') +
+      '?' +
+      req.httpHeaders.get('x-is-query_string'), // Get the URL from the request headers
     queryType: type,
-    method: "GET",
+    method: 'GET',
   });
 
   switch (type) {
-    case "url":
+    case 'url':
       // Content Type Based Queries
-      var slugUrl = req.httpHeaders.get("x-is-path_info").replace(sitePrefix, ''); // Get the URL from the request headers
+      var slugUrl = req.httpHeaders
+        .get('x-is-path_info')
+        .replace(sitePrefix, ''); // Get the URL from the request headers
       result = Object.assign(result, {
-        queryType: "content_type",
+        queryType: 'content_type',
         query: '{"url":"' + slugUrl + '"}',
         content_type_uid: apiData.content_type_uid, // Content type UID for product pages
         apiSlug:
-          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid +"/entries",
+          apiData.apiSlug ||
+          'v3/content_types/' + apiData.content_type_uid + '/entries',
       });
       break;
 
     //TODO: PARAMETERIZE THIS
-    case "taxonomy":
+    case 'taxonomy':
       // Taxonomy-Based Queries
       result = Object.assign(result, {
-        queryType: "taxonomy",
+        queryType: 'taxonomy',
         query:
           '{ "taxonomies.page_types" : "pdp", "_content_type_uid": "product_page" }',
-        apiSlug: apiData.apiSlug || "v3/taxonomies",
+        apiSlug: apiData.apiSlug || 'v3/taxonomies',
       });
       break;
 
     default:
       // Default to Content Type Based Queries
       result = Object.assign(result, {
-        queryType: "content_type",
+        queryType: 'content_type',
         query: apiData.query,
         content_type_uid: apiData.content_type_uid,
         apiSlug:
-          apiData.apiSlug || "v3/content_types/" + apiData.content_type_uid,
+          apiData.apiSlug || 'v3/content_types/' + apiData.content_type_uid,
       });
       break;
   }
@@ -257,9 +265,9 @@ var getRequestData = function (apiData, type, req, request) {
     result = Object.assign(result, req.querystring);
   }
 
-  if (request.httpCookies && request.httpCookies["cs-personalize-user-uid"]) {
+  if (request.httpCookies && request.httpCookies['cs-personalize-user-uid']) {
     // Retrieve user ID from cookies for personalization
-    var userId = request.httpCookies["cs-personalize-user-uid"].value;
+    var userId = request.httpCookies['cs-personalize-user-uid'].value;
     // Add personalization variant UID if available
     appendPersonalizeData(userId, result);
   }
@@ -293,9 +301,9 @@ var appendPersonalizeData = function (userId, requestData) {
     var experience = manifest.experiences[0];
     if (experience) {
       var variantUid =
-        "cs_personalize_" +
+        'cs_personalize_' +
         experience.shortUid +
-        "_" +
+        '_' +
         experience.activeVariantShortUid;
       requestData.variant = variantUid;
     }
@@ -306,20 +314,40 @@ module.exports = {
   /**
    * Retrieves CMS data from Contentstack.
    *
-   * @param {Object} requestData - The request data object.
+   * @param {Object} queryData - The request data object.
    * @returns {Object|null} The CMS data or null if the request fails.
    */
-  getCmsData: function (requestData) {
+  getCmsData: function (queryData) {
+    var requestData = getRequestData(
+      queryData,
+      queryData.queryType,
+      queryData.req,
+      queryData.request
+    );
     var cmsRequestData = appendBaseRequestData(requestData);
     var contentstackService = getContentService(cmsRequestData);
     var result = contentstackService.call(cmsRequestData);
     var payload = result.ok ? result.object : null;
     //Enrich the payload
     if (payload && payload.entries && payload.entries.length > 0) {
+      var CmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');
       for (var i = 0; i < payload.entries.length; i++) {
         var entry = payload.entries[i];
+        if (CmsHelper.isLivePreviewEnabled()) {
+          // Add editable tags for live preview
+          var lpUtils = require('*/cartridge/scripts/lib/contentstack-utils');
+          lpUtils.addEditableTags(
+            entry,
+            requestData.content_type_uid,
+            false,
+            requestData.locale
+          );
+        }
         // Enrich each entry in the payload
-        entry = ContentstackManager.processPayload(entry, requestData.content_type_uid);
+        entry = ContentstackManager.processPayload(
+          entry,
+          requestData.content_type_uid
+        );
         payload.entries[i] = entry;
       }
     }
@@ -329,4 +357,5 @@ module.exports = {
   // Utility function to append base request data
   appendBaseRequestData: appendBaseRequestData,
   getRequestData: getRequestData,
+  getCmsLocale: getCmsLocale,
 };

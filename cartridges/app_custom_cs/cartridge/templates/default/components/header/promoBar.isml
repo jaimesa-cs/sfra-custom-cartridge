@@ -1,23 +1,17 @@
-<div class="content">                     
-    <isif condition = "${pdict.cmsData == null}">
-        <isslot id="header-banner-m" description="Slot above the site header" context="global" />
-    </isif>
-    <isif condition = "${cmsData && cmsData.global_configuration}">
-        <isif condition = "${cmsData.global_configuration.promotion_bar_configuration === 'page-specific'}">
-            <isprint value="${cmsHelper.rteToHtml(cmsData.global_configuration.announcement_text)}" encoding="off" />
+<div class="content">       
+    <div class="promotion-bar">              
+        <isif condition = "${pdict.cmsData == null || (cmsData && cmsData.global_configuration && cmsData.global_configuration.promotion_bar_configuration == 'content-slot')}">
+            <isslot id="header-banner-m" description="Slot above the site header" context="global" />
         </isif>
-        <isif condition = "${cmsData.global_configuration.promotion_bar_configuration === 'use-existing' && cmsData.global_configuration.promotion_bar.length > 0}">
-            <isloop items="${cmsData.global_configuration.promotion_bar}" var="item">
-                <style>
-                    .promotion-bar > p {
-                        margin-top: 0;
-                        margin-bottom: 0;
-                    }
-                </style>
-                <div class="promotion-bar">
+        <isif condition = "${cmsData && cmsData.global_configuration}">
+            <isif condition = "${cmsData.global_configuration.promotion_bar_configuration === 'page-specific'}">
+                <isprint value="${cmsHelper.rteToHtml(cmsData.global_configuration.announcement_text)}" encoding="off" />
+            </isif>
+            <isif condition = "${cmsData.global_configuration.promotion_bar_configuration === 'use-existing' && cmsData.global_configuration.promotion_bar.length > 0}">
+                <isloop items="${cmsData.global_configuration.promotion_bar}" var="item">
                     <isprint value="${cmsHelper.rteToHtml(item.announcement_text)}" encoding="off" />
-                </div>
-            </isloop>
+                </isloop>
+            </isif>
         </isif>
-    </isif>
+    </div>
 </div>

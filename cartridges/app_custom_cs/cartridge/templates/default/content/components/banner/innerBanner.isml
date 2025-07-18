@@ -23,7 +23,7 @@
 <div class="homepage banner_${banner.image.uid}" ${cmsUtils.cslp(banner, 'image')}>
     <a href="${ctaUrl}" title="${banner.cta.link.title}">
         <div class="hero ${banner.slant}">
-            <h1 class="page-title" ${cmsUtils.cslp(banner, 'heading')}>
+            <h1 class="page-title" ${cmsUtils.cslp(banner, 'heading')}> 
             ${banner.heading}
             </h1>
         </div>

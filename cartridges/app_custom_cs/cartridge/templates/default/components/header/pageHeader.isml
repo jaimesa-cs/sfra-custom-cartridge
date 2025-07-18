@@ -1,18 +1,26 @@
+<style>
+    .promotion-bar p {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+</style>
 <header>
     <isinclude template="/components/header/skipNav" />
-    <div class="header-banner slide-up d-none">
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <div></div>
-                <isinclude template="components/header/promoBar" />
-                <div class="close-button">
-                    <button type="button" class="close" aria-label="${Resource.msg('label.header.banner.close', 'common', null)}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <isif condition = "${pdict.cmsData == null || (cmsData && cmsData.global_configuration && cmsData.global_configuration.promotion_bar_configuration != 'no-promotion-bar')}">
+        <div class="header-banner slide-up d-none">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <div></div>
+                    <isinclude template="components/header/promoBar" />
+                    <div class="close-button">
+                        <button type="button" class="close" aria-label="${Resource.msg('label.header.banner.close', 'common', null)}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </isif>
     <nav role="navigation">
         <div class="header container">
             <div class="row">
