@@ -2,7 +2,7 @@
 <isset name="cmsHelper" value="${pdict.cmsHelper}" scope="page" />
 <isset name="cmsUtils" value="${pdict.cmsUtils}" scope="page" />
 <isif condition="${cmsData}">
-    <isinclude template="content/cms-content-asset" />
+    <isinclude template="pages/global-modular-blocks" />
 <iselse>    
     <isprint value="${pdict.content.body}" encoding="off" />    
 </isif>

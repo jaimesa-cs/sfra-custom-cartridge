@@ -333,7 +333,10 @@ module.exports = {
       var CmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');
       for (var i = 0; i < payload.entries.length; i++) {
         var entry = payload.entries[i];
-        if (CmsHelper.isLivePreviewEnabled()) {
+        if (
+          CmsHelper.isLivePreviewEnabled() &&
+          !queryData.disableLivePreviewTags
+        ) {
           // Add editable tags for live preview
           var lpUtils = require('*/cartridge/scripts/lib/contentstack-utils');
           lpUtils.addEditableTags(

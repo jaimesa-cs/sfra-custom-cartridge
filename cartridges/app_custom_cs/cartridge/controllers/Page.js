@@ -21,15 +21,20 @@ server.append('Show', function (req, res, next) {
 
   // Fetch CMS data from Contentstack
   if (req.querystring.cid) {
+    const contentTypeUid = 'content_asset';
     data = Contentstack.getCmsData({
-      content_type_uid: 'content_asset',
+      content_type_uid: contentTypeUid,
       query: '{"cid":"' + req.querystring.cid + '"}',
-      apiSlug: 'v3/content_types/content_asset/entries',
+      apiSlug: 'v3/content_types/' + contentTypeUid + '/entries',
+      includes: [
+        'global_configuration.promotion_bar',
+        'components.elements.banner.existing_banner',
+      ],
       queryType: 'default',
       req: req,
       request: request,
     });
-    pageType = 'content_asset';
+    pageType = contentTypeUid;
   } else if (
     req.querystring.u && //url slug
     req.querystring.c && //content type
@@ -64,10 +69,8 @@ server.append('Show', function (req, res, next) {
   viewData.isLivePreview = CmsHelper.isLivePreviewEnabled();
   res.setViewData(viewData);
   switch (pageType) {
-    case 'page':
-      res.render('pages/page');
-      break;
     default:
+      res.render('pages/page');
       break;
   }
   return next();
@@ -91,9 +94,14 @@ server.get('HTML', function (req, res, next) {
     content_type_uid: contentTypeUid,
     query: '{"cid":"' + cid + '"}',
     apiSlug: 'v3/content_types/' + contentTypeUid + '/entries',
+    includes: [
+      'global_configuration.promotion_bar',
+      'components.elements.banner.existing_banner',
+    ],
     queryType: 'default',
     req: req,
     request: request,
+    disableLivePreviewTags: true,
   });
   var viewData = res.getViewData();
   if (data && data.entries && data.entries.length > 0) {
@@ -103,8 +111,9 @@ server.get('HTML', function (req, res, next) {
     viewData.cmsHelper = require('*/cartridge/scripts/helpers/cmsHelper');
     viewData.cmsUtils = require('*/cartridge/scripts/lib/custom-utils');
   }
+  viewData.isLivePreview = false; // Disable live preview for this route
   res.setViewData(viewData);
-  res.render('content/contentAssetFragment');
+  res.render('pages/global-modular-blocks');
   next();
 });
 

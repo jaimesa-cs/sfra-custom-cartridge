@@ -5,6 +5,6 @@
         assets.addCss('/css/homePage.css');
     </isscript>        
     <isif condition="${pdict && pdict.cmsData != null}">
-        <isinclude template="pages/global-modular-blocks.isml" />
+        <isinclude template="pages/global-modular-blocks" />
     </isif>
 </isdecorate>
